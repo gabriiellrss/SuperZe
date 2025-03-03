@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://c5t5kw2j8yaxp"]
 
 [ext_resource type="Texture2D" uid="uid://bcbm4el0bo86g" path="res://assets/New_All_Fire_Bullet_Pixel_16x16/All_Fire_Bullet_Pixel_16x16_02.png" id="1_3mdtr"]
-[ext_resource type="Script" path="res://animated_sprite_2d.gd" id="2_owdmt"]
+[ext_resource type="Script" uid="uid://rcjemxeiertr" path="res://animated_sprite_2d.gd" id="2_owdmt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bnddm"]
 
