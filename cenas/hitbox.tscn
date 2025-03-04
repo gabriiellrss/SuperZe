@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxbd4iyvocbp0"]
+
+[sub_resource type="GDScript" id="GDScript_t6nij"]
+resource_name = "hitbox"
+script/source = "extends Area2D
+
+func _on_body_exited(body: Node2D) -> void:
+	if body.name == \"player\":
+		body.velocity.y = body.JUMP_VELOCITY
+		owner.queue_free()
+"
+
+[node name="hitbox" type="Area2D"]
+collision_layer = 16
+script = SubResource("GDScript_t6nij")
+
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

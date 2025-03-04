@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-const HIGH_JUMP_VELOCITY = -550.0
+const JUMP_VELOCITY = -300.0
+const HIGH_JUMP_VELOCITY = -300.0
 const BULLET_SPEED = 1000.0  
 const MAX_AIR_JUMPS = 1  # Quantidade de pulos extras no ar
 
@@ -68,6 +68,14 @@ func _physics_process(delta):
 	# Corrige o espelhamento do personagem dependendo da direção do movimento
 	if direction != 0:
 		$anim.flip_h = (direction < 0)  # Usa flip_h ao invés de mexer no scale.x
+		
+
 
 
 	move_and_slide()
+
+
+func _on_hurtbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Teste"):
+		print("foi alguma coisa")
+		queue_free()

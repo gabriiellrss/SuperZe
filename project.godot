@@ -21,6 +21,10 @@ window/size/viewport_width=640
 window/size/viewport_height=360
 window/stretch/mode="canvas_items"
 
+[global_group]
+
+enemies=""
+
 [input]
 
 move_left={
@@ -48,6 +52,15 @@ aim={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(334, 6),"global_position":Vector2(343, 52),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="wold"
+2d_physics/layer_3="enemies"
+2d_physics/layer_4="items"
+2d_physics/layer_5="hitbox"
+2d_physics/layer_6="hurtbox"
 
 [rendering]
 
