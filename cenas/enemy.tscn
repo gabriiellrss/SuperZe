@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
-size = Vector2(21.1343, 10.6988)
+size = Vector2(21.8568, 12.2272)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qi2p4"]
 atlas = ExtResource("1_7k104")
@@ -74,7 +74,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbqij"]
-size = Vector2(16, 3)
+size = Vector2(15, 2.25)
 
 [node name="enemy" type="CharacterBody2D" groups=["Teste", "enemies"]]
 collision_layer = 4
@@ -82,7 +82,7 @@ collision_mask = 35
 script = SubResource("GDScript_7k104")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Teste"]]
-position = Vector2(233.375, 139)
+position = Vector2(233, 138)
 scale = Vector2(1.38401, 1.30856)
 shape = SubResource("RectangleShape2D_4gyqm")
 
