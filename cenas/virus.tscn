@@ -8,17 +8,25 @@ resource_name = "enemy"
 script/source = "extends CharacterBody2D
 
 @export var speed: float = 100.0  # Velocidade do inimigo
+@export var gravity: float = 500.0  # Gravidade aplicada quando ele cai
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var raycast_left: RayCast2D = $RayCastLeft
 @onready var raycast_right: RayCast2D = $RayCastRight
+@onready var particles = $CPUParticles2D  # Pegamos o nó de partículas
 
 var direction: int = 1  # 1 para direita, -1 para esquerda
+var is_dying: bool = false  # Controle para evitar movimento enquanto cai
 
 func _ready() -> void:
 	sprite.play(\"default\")  # Ativa a animação
 
 func _physics_process(delta: float) -> void:
-	# Move o inimigo para frente
+	if is_dying:
+		velocity.y += gravity * delta  # Aplica gravidade para cair
+		move_and_slide()
+		return  # Sai da função para não mover normalmente
+
+	# Move o inimigo para frente normalmente
 	velocity.x = direction * speed
 	move_and_slide()  # Processa o movimento antes de verificar colisões
 
@@ -26,6 +34,26 @@ func _physics_process(delta: float) -> void:
 	if is_on_wall() or (direction == 1 and raycast_right.is_colliding()) or (direction == -1 and raycast_left.is_colliding()):
 		direction *= -1  # Inverte a direção do movimento
 		sprite.scale.x *= -1  # Espelha o sprite para o outro lado
+
+func take_damage():
+	if is_dying:
+		return
+
+	is_dying = true  # Marca que o inimigo está morrendo
+	sprite.modulate = Color(1, 0, 0)  # Fica vermelho no impacto
+	particles.emitting = true  # Ativa as partículas
+	velocity.x = 0  # Para o movimento horizontal
+	velocity.y = 250  # Dá um impulso inicial para baixo (queda mais rápida)
+
+	# Faz o inimigo piscar rapidamente antes de sumir
+	for i in range(3):  # Pisca 2 vezes bem rápido
+		sprite.visible = false
+		await get_tree().create_timer(0.02).timeout
+		sprite.visible = true
+		await get_tree().create_timer(0.02).timeout
+
+	await get_tree().create_timer(0.2).timeout  # Pequena espera antes de sumir
+	queue_free()  # Remove o inimigo da cena
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
@@ -82,7 +110,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbqij"]
-size = Vector2(191.625, 34.9688)
+size = Vector2(188.334, 34.9688)
 
 [node name="virus" type="CharacterBody2D" groups=["Teste", "enemies"]]
 scale = Vector2(0.3, 0.3)
@@ -113,6 +141,10 @@ collision_mask = 6
 [node name="hitbox" parent="." groups=["Teste", "enemies"] instance=ExtResource("2_rnutm")]
 
 [node name="collision" type="CollisionShape2D" parent="hitbox" groups=["Teste", "enemies"]]
-position = Vector2(239.188, 65.5156)
+position = Vector2(240.834, 65.5156)
 shape = SubResource("RectangleShape2D_wbqij")
 debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+one_shot = true

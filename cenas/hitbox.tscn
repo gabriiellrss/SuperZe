@@ -7,7 +7,7 @@ script/source = "extends Area2D
 func _on_body_exited(body: Node2D) -> void:
 	if body.name == \"player\":
 		body.velocity.y = body.JUMP_VELOCITY
-		owner.queue_free()
+		owner.take_damage()  # Chama a função de dano no inimigo
 "
 
 [node name="hitbox" type="Area2D"]
