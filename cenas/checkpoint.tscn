@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://df1vvfnomfqwp"]
+
+[ext_resource type="Script" uid="uid://vwae0mich4jw" path="res://cenas/checkpoint.gd" id="1_fboou"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ysaax"]
+
+[node name="checkpoint" type="Area2D"]
+script = ExtResource("1_fboou")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ysaax")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

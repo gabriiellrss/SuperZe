@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cok4h8b47wq57"]
+
+[ext_resource type="Texture2D" uid="uid://d3i3c62ecb0br" path="res://assets/decorations/rock.png" id="1_8ha5h"]
+[ext_resource type="Script" uid="uid://birnl5j3hpaie" path="res://scripts/moving_plataform.gd" id="1_tc5f2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tc5f2"]
+size = Vector2(92, 37)
+
+[node name="moving_plataform" type="Node2D"]
+script = ExtResource("1_tc5f2")
+
+[node name="plataforma" type="AnimatableBody2D" parent="."]
+position = Vector2(284, 89)
+
+[node name="Sprite2D" type="Sprite2D" parent="plataforma"]
+
+[node name="Rock" type="Sprite2D" parent="plataforma"]
+position = Vector2(-199, -54.5)
+scale = Vector2(5.75, 3.8125)
+texture = ExtResource("1_8ha5h")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="colizãp" type="CollisionShape2D" parent="plataforma"]
+position = Vector2(-194, -36.5)
+shape = SubResource("RectangleShape2D_tc5f2")

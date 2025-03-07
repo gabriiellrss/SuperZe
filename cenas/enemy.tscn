@@ -1,0 +1,105 @@
+[gd_scene load_steps=11 format=3 uid="uid://divl0cc7aheme"]
+
+[ext_resource type="Texture2D" uid="uid://dyped5sxgu82w" path="res://assets/enemies/bear_polar.png" id="1_7k104"]
+[ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="2_sbeh8"]
+
+[sub_resource type="GDScript" id="GDScript_7k104"]
+resource_name = "enemy"
+script/source = "extends CharacterBody2D
+
+@export var speed: float = 100.0  # Velocidade do inimigo
+@export var gravity: float = 980.0  # Gravidade do inimigo
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var raycast: RayCast2D = $RayCast2D
+
+var direction: int = 1  # 1 para direita, -1 para esquerda
+
+func _ready() -> void:
+	sprite.play(\"default\")  # Ativa a animação
+
+func _physics_process(delta: float) -> void:
+	# Aplica a gravidade
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	# Move o inimigo para frente
+	velocity.x = direction * speed
+	move_and_slide()  # Processa o movimento antes de verificar colisões
+
+	# Verifica se bateu na parede ou o RayCast detectou algo
+	if is_on_wall() or raycast.is_colliding():
+		direction *= -1  # Inverte a direção do movimento
+		sprite.scale.x *= -1  # Espelha o sprite para o outro lado
+		raycast.position.x *= -1  # Move o RayCast para o outro lado
+		raycast.target_position.x *= -1  # Inverte a direção do RayCast
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
+size = Vector2(21.8568, 12.2272)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qi2p4"]
+atlas = ExtResource("1_7k104")
+region = Rect2(0, 36, 32, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iifgy"]
+atlas = ExtResource("1_7k104")
+region = Rect2(32, 36, 32, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epg4t"]
+atlas = ExtResource("1_7k104")
+region = Rect2(64, 36, 32, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yqyl"]
+atlas = ExtResource("1_7k104")
+region = Rect2(96, 36, 32, 27)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wujgv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qi2p4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iifgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epg4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yqyl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbqij"]
+size = Vector2(15, 2.25)
+
+[node name="enemy" type="CharacterBody2D" groups=["Teste", "enemies"]]
+collision_layer = 4
+collision_mask = 35
+script = SubResource("GDScript_7k104")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Teste"]]
+position = Vector2(233, 138)
+scale = Vector2(1.38401, 1.30856)
+shape = SubResource("RectangleShape2D_4gyqm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(230, 132)
+sprite_frames = SubResource("SpriteFrames_wujgv")
+frame_progress = 0.231476
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(222, 138)
+rotation = -1.5708
+target_position = Vector2(0, 23)
+collision_mask = 7
+
+[node name="hitbox" parent="." groups=["Teste", "enemies"] instance=ExtResource("2_sbeh8")]
+
+[node name="collision" type="CollisionShape2D" parent="hitbox" groups=["Teste", "enemies"]]
+position = Vector2(234, 129)
+shape = SubResource("RectangleShape2D_wbqij")
+debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
