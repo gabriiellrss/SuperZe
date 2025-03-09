@@ -1,0 +1,104 @@
+[gd_scene load_steps=14 format=3 uid="uid://de1olpkswj3g3"]
+
+[ext_resource type="Script" uid="uid://c6ui8kd2squr0" path="res://virus_4.gd" id="1_d55a1"]
+[ext_resource type="Texture2D" uid="uid://dlc8cg3r2e8t8" path="res://assets/VIRUSZADA.png" id="2_oeqc4"]
+[ext_resource type="Texture2D" uid="uid://cm2ppee4tb3hm" path="res://assets/VIRUSDANO.png" id="3_h5aik"]
+[ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="3_l7mg1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ou2mw"]
+size = Vector2(142.664, 112.242)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw6k6"]
+atlas = ExtResource("2_oeqc4")
+region = Rect2(0, 0, 520, 520)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68018"]
+atlas = ExtResource("2_oeqc4")
+region = Rect2(520, 0, 520, 520)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cok4"]
+atlas = ExtResource("2_oeqc4")
+region = Rect2(1040, 0, 520, 520)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gma0t"]
+atlas = ExtResource("2_oeqc4")
+region = Rect2(1560, 0, 520, 520)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hgfdy"]
+atlas = ExtResource("3_h5aik")
+region = Rect2(0, 0, 524, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uicht"]
+atlas = ExtResource("3_h5aik")
+region = Rect2(524, 0, 524, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufvud"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw6k6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_68018")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cok4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gma0t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hgfdy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uicht")
+}],
+"loop": true,
+"name": &"morto",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66hvv"]
+size = Vector2(188.334, 34.9688)
+
+[node name="VIRUS4" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 35
+script = ExtResource("1_d55a1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Teste"]]
+position = Vector2(242.057, 156.563)
+scale = Vector2(1.38401, 1.30856)
+shape = SubResource("RectangleShape2D_ou2mw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(241, 144)
+scale = Vector2(0.395851, 0.333149)
+sprite_frames = SubResource("SpriteFrames_ufvud")
+animation = &"morto"
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(326.667, 156.667)
+target_position = Vector2(15, 0)
+collision_mask = 6
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(160, 156.667)
+target_position = Vector2(-15, 0)
+collision_mask = 6
+
+[node name="hitbox" parent="." groups=["Teste", "enemies"] instance=ExtResource("3_l7mg1")]
+
+[node name="collision" type="CollisionShape2D" parent="hitbox" groups=["Teste", "enemies"]]
+position = Vector2(240.834, 65.5156)
+shape = SubResource("RectangleShape2D_66hvv")
+debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+one_shot = true
