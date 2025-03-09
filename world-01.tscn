@@ -1,6 +1,7 @@
-[gd_scene load_steps=20 format=4 uid="uid://cstebekd7yrcu"]
+[gd_scene load_steps=34 format=4 uid="uid://cstebekd7yrcu"]
 
 [ext_resource type="Script" uid="uid://dvifg0a5ne0jr" path="res://area_danger.gd" id="1_7g5es"]
+[ext_resource type="PackedScene" uid="uid://df1vvfnomfqwp" path="res://cenas/checkpoint.tscn" id="1_ecmfo"]
 [ext_resource type="Texture2D" uid="uid://bo05msig6socq" path="res://assets/decorations/lava.png" id="1_nw1fg"]
 [ext_resource type="PackedScene" uid="uid://cfxjwip0qv2ui" path="res://cenas/virus.tscn" id="2_7g5es"]
 [ext_resource type="Texture2D" uid="uid://bsfyf4elilbve" path="res://assets/TileSetLaboratoryv2_ByOleteras/LaboratoryTilesetV2.png" id="2_dnccj"]
@@ -12,6 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://cvx2fc4wrg1a6" path="res://assets/free-city-backgrounds-pixel-art/city 5/3.png" id="10_15fco"]
 [ext_resource type="Texture2D" uid="uid://06dbg8tmeloj" path="res://assets/free-city-backgrounds-pixel-art/city 5/4.png" id="11_ecmfo"]
 [ext_resource type="Texture2D" uid="uid://cymb5uau8w0o2" path="res://assets/free-city-backgrounds-pixel-art/city 5/5.png" id="12_77i5e"]
+[ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="13_15fco"]
+[ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="13_idak8"]
+[ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="16_77i5e"]
 
 [sub_resource type="GDScript" id="GDScript_agall"]
 resource_name = "world"
@@ -20,26 +24,40 @@ script/source = "extends Node2D
 @onready var player := $player as CharacterBody2D
 @onready var player_scene = preload(\"res://cenas/player.tscn\")
 @onready var camera := $camera as Camera2D
+@onready var control: Control = $HUD/Control
 
-# Called when the node enters the scene tree for the first time.
+# Chamado quando o nó entra na árvore da cena
 func _ready() -> void:
 	Globals.player = player
 	Globals.player.follow_camera(camera)
 	Globals.player.player_has_died.connect(reload_game)
+	control.time_is_up.connect(reload_game)
+	Globals.player_life = 3
 
 func reload_game():
-	await  get_tree().create_timer(1.0).timeout
-	var player = player_scene.instantiate()
+	if player:
+		player.queue_free()  # Remove o jogador antigo
+		await get_tree().process_frame  # Aguarda 1 frame para garantir a remoção
+
+	# Criar novo jogador corretamente
+	player = player_scene.instantiate()
 	add_child(player)
+	player.global_position = Vector2(100, 100)  # Posição inicial ajustável
 	Globals.player = player
 	Globals.player.follow_camera(camera)
 	Globals.player.player_has_died.connect(reload_game)
+
+	# Resetar tempo e vidas ao reiniciar o jogo
+	Globals.player_life = 3
 	Globals.respawn_player()
+	#control.reset_clock_timer()  # Reinicia o tempo corretamente
+
+	print(\"Jogo reiniciado! Novo jogador criado.\")
 
 func _on_area_danger_body_entered(body: Node2D) -> void:
 	if body.name == \"player\":
 		print(\"O player está aqui\")
-		body.take_demage(Vector2(0,-250))
+		body.take_demage(Vector2(0, -250))
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7g5es"]
@@ -655,8 +673,85 @@ texture = ExtResource("1_nw1fg")
 physics_layer_0/collision_layer = 3
 sources/1 = SubResource("TileSetAtlasSource_64xsk")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_15fco"]
+atlas = ExtResource("13_idak8")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecmfo"]
+atlas = ExtResource("13_idak8")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77i5e"]
+atlas = ExtResource("13_idak8")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8loh"]
+atlas = ExtResource("13_idak8")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yl2io"]
+atlas = ExtResource("13_idak8")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sh6vd"]
+atlas = ExtResource("13_idak8")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ieoi2"]
+atlas = ExtResource("13_idak8")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_84rnc"]
+atlas = ExtResource("13_idak8")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_moyiv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_15fco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecmfo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77i5e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8loh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yl2io")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sh6vd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ieoi2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84rnc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_ef4t5"]
+frames = 8
+frame_1/duration = 1.0
+frame_2/duration = 1.0
+frame_3/duration = 1.0
+frame_4/duration = 1.0
+frame_5/duration = 1.0
+frame_6/duration = 1.0
+frame_7/duration = 1.0
+
 [node name="world" type="Node2D"]
 script = SubResource("GDScript_agall")
+
+[node name="checkpoint" parent="." instance=ExtResource("1_ecmfo")]
+position = Vector2(373, 230)
 
 [node name="AreaDanger" type="Area2D" parent="."]
 position = Vector2(434, 356)
@@ -786,4 +881,105 @@ texture = ExtResource("12_77i5e")
 position = Vector2(0, -29)
 zoom = Vector2(1.5, 1.5)
 
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_15fco")
+default_minutes = 3
+default_seconds = 5
+
+[node name="clock_time" type="Timer" parent="HUD/Control"]
+autostart = true
+
+[node name="container" type="MarginContainer" parent="HUD/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="coinsContainer" type="HBoxContainer" parent="HUD/Control/container"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HUD/Control/container/coinsContainer"]
+visible = false
+position = Vector2(-9, 12)
+sprite_frames = SubResource("SpriteFrames_moyiv")
+frame_progress = 0.898901
+
+[node name="coinsIcons" type="TextureRect" parent="HUD/Control/container/coinsContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AnimatedTexture_ef4t5")
+
+[node name="coinsCounter" type="Label" parent="HUD/Control/container/coinsContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "000"
+
+[node name="scoreContainer" type="HBoxContainer" parent="HUD/Control/container"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="scoreCounter" type="Label" parent="HUD/Control/container/scoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Score:"
+
+[node name="scoreCounter2" type="Label" parent="HUD/Control/container/scoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "000"
+
+[node name="timeContainer" type="HBoxContainer" parent="HUD/Control/container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="timeCounter" type="Label" parent="HUD/Control/container/timeContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Tempo:"
+
+[node name="timeCounter2" type="Label" parent="HUD/Control/container/timeContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "000"
+
+[node name="lifeContainer" type="HBoxContainer" parent="HUD/Control/container"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="lifeCounter" type="Label" parent="HUD/Control/container/lifeContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Tempo:"
+
+[node name="pause_menu" parent="HUD/Control" instance=ExtResource("16_77i5e")]
+visible = false
+
 [connection signal="body_entered" from="AreaDanger" to="." method="_on_area_danger_body_entered"]
+[connection signal="timeout" from="HUD/Control/clock_time" to="HUD/Control" method="_on_clock_time_timeout"]

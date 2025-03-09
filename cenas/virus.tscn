@@ -7,6 +7,8 @@
 resource_name = "enemy"
 script/source = "extends CharacterBody2D
 
+@export var enemy_score:= 100
+
 @export var speed: float = 100.0  # Velocidade do inimigo
 @export var gravity: float = 500.0  # Gravidade aplicada quando ele cai
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -53,6 +55,7 @@ func take_damage():
 		await get_tree().create_timer(0.02).timeout
 
 	await get_tree().create_timer(0.2).timeout  # Pequena espera antes de sumir
+	Globals.score += enemy_score
 	queue_free()  # Remove o inimigo da cena
 "
 

@@ -9,11 +9,12 @@ func _on_body_entered(body: Node2D) -> void:
 	activate_checkpoint()
 		
 func activate_checkpoint():
+	Globals.current_checkpoint = self
 	print("O checkpoint está funcionando patrão")
 	anim.play("default")
 	is_active = true
 
-func _on_animated_sprite_2d_animation_finished() -> void:
-	if anim.animation == "raising":
-		anim.play()
+#func _on_animated_sprite_2d_animation_finished() -> void:
+	#if anim.animation == "raising":
+		#anim.play()
 		

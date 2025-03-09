@@ -9,7 +9,6 @@ const MAX_AIR_JUMPS = 1  # Quantidade de pulos extras no ar
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var air_jumps = 0
 var is_jumping = false
-@export var player_life := 10
 var knockback_vector := Vector2.ZERO
 
 @onready var anim := $anim as AnimatedSprite2D
@@ -98,11 +97,11 @@ func follow_camera(camera):
 
 func take_demage(knockback_force := Vector2.ZERO, duration:= 0.25):
 	
-	if player_life > 0:
-		player_life -= 1
+	if Globals.player_life > 0:
+		Globals.player_life -= 1
 	else: 
-		queue_free()
 		emit_signal("player_has_died")
+		queue_free()
 	
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
