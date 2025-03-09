@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dvifg0a5ne0jr" path="res://area_danger.gd" id="1_7g5es"]
 [ext_resource type="PackedScene" uid="uid://df1vvfnomfqwp" path="res://cenas/checkpoint.tscn" id="1_ecmfo"]
 [ext_resource type="Texture2D" uid="uid://bo05msig6socq" path="res://assets/decorations/lava.png" id="1_nw1fg"]
+[ext_resource type="Script" uid="uid://ue7uu4b88j2c" path="res://scripts/world-01.tres.gd" id="1_w8loh"]
 [ext_resource type="PackedScene" uid="uid://cfxjwip0qv2ui" path="res://cenas/virus.tscn" id="2_7g5es"]
 [ext_resource type="Texture2D" uid="uid://bsfyf4elilbve" path="res://assets/TileSetLaboratoryv2_ByOleteras/LaboratoryTilesetV2.png" id="2_dnccj"]
 [ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="3_agall"]
@@ -16,49 +17,6 @@
 [ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="13_15fco"]
 [ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="13_idak8"]
 [ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="16_77i5e"]
-
-[sub_resource type="GDScript" id="GDScript_agall"]
-resource_name = "world"
-script/source = "extends Node2D
-
-@onready var player := $player as CharacterBody2D
-@onready var player_scene = preload(\"res://cenas/player.tscn\")
-@onready var camera := $camera as Camera2D
-@onready var control: Control = $HUD/Control
-
-# Chamado quando o nó entra na árvore da cena
-func _ready() -> void:
-	Globals.player = player
-	Globals.player.follow_camera(camera)
-	Globals.player.player_has_died.connect(reload_game)
-	control.time_is_up.connect(reload_game)
-	Globals.player_life = 3
-
-func reload_game():
-	if player:
-		player.queue_free()  # Remove o jogador antigo
-		await get_tree().process_frame  # Aguarda 1 frame para garantir a remoção
-
-	# Criar novo jogador corretamente
-	player = player_scene.instantiate()
-	add_child(player)
-	player.global_position = Vector2(100, 100)  # Posição inicial ajustável
-	Globals.player = player
-	Globals.player.follow_camera(camera)
-	Globals.player.player_has_died.connect(reload_game)
-
-	# Resetar tempo e vidas ao reiniciar o jogo
-	Globals.player_life = 3
-	Globals.respawn_player()
-	#control.reset_clock_timer()  # Reinicia o tempo corretamente
-
-	print(\"Jogo reiniciado! Novo jogador criado.\")
-
-func _on_area_danger_body_entered(body: Node2D) -> void:
-	if body.name == \"player\":
-		print(\"O player está aqui\")
-		body.take_demage(Vector2(0, -250))
-"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7g5es"]
 
@@ -748,7 +706,7 @@ frame_6/duration = 1.0
 frame_7/duration = 1.0
 
 [node name="world" type="Node2D"]
-script = SubResource("GDScript_agall")
+script = ExtResource("1_w8loh")
 
 [node name="checkpoint" parent="." instance=ExtResource("1_ecmfo")]
 position = Vector2(373, 230)
@@ -979,7 +937,6 @@ size_flags_vertical = 0
 text = "Tempo:"
 
 [node name="pause_menu" parent="HUD/Control" instance=ExtResource("16_77i5e")]
-visible = false
 
 [connection signal="body_entered" from="AreaDanger" to="." method="_on_area_danger_body_entered"]
 [connection signal="timeout" from="HUD/Control/clock_time" to="HUD/Control" method="_on_clock_time_timeout"]

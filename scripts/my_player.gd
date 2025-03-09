@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 const SPEED = 300.0
-const JUMP_VELOCITY = -330.0
-const HIGH_JUMP_VELOCITY = -300.0
+const JUMP_VELOCITY = -350.0
+const HIGH_JUMP_VELOCITY = -200.0
 const BULLET_SPEED = 1000.0  
 const MAX_AIR_JUMPS = 1  # Quantidade de pulos extras no ar
 
