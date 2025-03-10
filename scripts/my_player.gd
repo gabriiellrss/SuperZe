@@ -1,14 +1,15 @@
 extends CharacterBody2D
 
 const SPEED = 300.0
-const JUMP_VELOCITY = -350.0
-const HIGH_JUMP_VELOCITY = -200.0
+const JUMP_VELOCITY = -330.0
+const HIGH_JUMP_VELOCITY = -300.0
 const BULLET_SPEED = 1000.0  
 const MAX_AIR_JUMPS = 1  # Quantidade de pulos extras no ar
-
+var is_dead := false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var air_jumps = 0
 var is_jumping = false
+@export var player_life := 10
 var knockback_vector := Vector2.ZERO
 
 @onready var anim := $anim as AnimatedSprite2D
@@ -18,7 +19,7 @@ signal player_has_died()
 
 # Aceleração e desaceleração para o movimento
 const ACCELERATION = 600.0
-const DECELERATION = 800.0
+const DECELERATION = 1500.0
 const AIR_CONTROL_FACTOR = 0.6  # Controla o movimento no ar (quanto mais baixo, menos controle)
 
 func _physics_process(delta):
@@ -81,32 +82,49 @@ func _physics_process(delta):
 
 
 func _on_hurtbox_body_entered(body: Node2D) -> void:
-	#if body.is_in_group("Teste"):
-		#print("foi alguma coisa")
-		#anim.play("dead")
-		#queue_free()
-	
-	if $ray_right.is_colliding():
-		take_demage(Vector2(-400, -400))
-	elif $ray_left.is_colliding():
-		take_demage(Vector2(400, -400))
+	# Verifica se o corpo que entrou na hurtbox é um inimigo ou algo que causa dano
+	if $ray_right.is_colliding():  # Se o raycast da direita estiver colidindo
+		take_demage(Vector2(-400, -400))  # Aplica knockback para a esquerda
+	elif $ray_left.is_colliding():  # Se o raycast da esquerda estiver colidindo
+		take_demage(Vector2(400, -400))  # Aplica knockback para a direita
 		
 func follow_camera(camera):
 	var camera_path = camera.get_path()
 	remote_transform.remote_path = camera_path
 
-func take_demage(knockback_force := Vector2.ZERO, duration:= 0.25):
-	
-	if Globals.player_life > 0:
-		Globals.player_life -= 1
-	else: 
-		emit_signal("player_has_died")
-		queue_free()
-	
+func take_demage(knockback_force := Vector2.ZERO, duration := 0.25):
+	if is_dead:  # Se o jogador já está morto, não faz nada
+		return
+
+	if player_life > 0:
+		player_life -= 1
+	else:
+		# Mata o jogador
+		is_dead = true
+		anim.play("DIED")  # Reproduz a animação de morte
+		velocity = Vector2.ZERO  # Para o movimento do jogador
+		set_physics_process(false)  # Congela o jogador (desativa _physics_process)
+
+		# Espera 2 segundos antes de renascer
+		await get_tree().create_timer(1.0).timeout
+
+		# Renasce o jogador
+		respawn()
+
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
-		
 		var knockback_tween := get_tree().create_tween()
 		knockback_tween.parallel().tween_property(self, "knockback_vector", Vector2.ZERO, duration)
-		anim.modulate = Color(1,0,0,1)
-		knockback_tween.parallel().tween_property(anim, "modulate", Color(1,1,1,1), duration)
+		anim.modulate = Color(1, 0, 0, 1)
+		knockback_tween.parallel().tween_property(anim, "modulate", Color(1, 1, 1, 1), duration)
+func respawn():
+	# Reseta o estado do jogador
+	is_dead = false
+	player_life = 3  # Reseta a vida (ou defina o valor inicial desejado)
+	velocity = Vector2.ZERO  # Reseta a velocidade
+	knockback_vector = Vector2.ZERO  # Reseta o knockback
+	anim.play("idle")  # Volta para a animação de idle
+	set_physics_process(true)  # Reativa o _physics_process
+
+	# Reposiciona o jogador no ponto de renascimento
+	global_position = Vector2(100, 100)  # Defina a posição de renascimento desejada
