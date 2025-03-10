@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdck4qla7j8fo"]
+
+[ext_resource type="Script" uid="uid://724ueini66kl" path="res://scripts/goal.gd" id="1_htatk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_htatk"]
+
+[node name="goal" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_htatk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_htatk")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://cstebekd7yrcu"]
+[gd_scene load_steps=35 format=4 uid="uid://cstebekd7yrcu"]
 
 [ext_resource type="Script" uid="uid://dvifg0a5ne0jr" path="res://area_danger.gd" id="1_7g5es"]
 [ext_resource type="PackedScene" uid="uid://df1vvfnomfqwp" path="res://cenas/checkpoint.tscn" id="1_ecmfo"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="13_15fco"]
 [ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="13_idak8"]
 [ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="16_77i5e"]
+[ext_resource type="PackedScene" uid="uid://dsovspxvlq31f" path="res://cenas/transition.tscn" id="17_w8loh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7g5es"]
 
@@ -937,6 +938,11 @@ size_flags_vertical = 0
 text = "Tempo:"
 
 [node name="pause_menu" parent="HUD/Control" instance=ExtResource("16_77i5e")]
+<<<<<<< HEAD
+=======
+
+[node name="transition" parent="." instance=ExtResource("17_w8loh")]
+>>>>>>> 037c21c (Eu sonhei com programação)
 
 [connection signal="body_entered" from="AreaDanger" to="." method="_on_area_danger_body_entered"]
 [connection signal="timeout" from="HUD/Control/clock_time" to="HUD/Control" method="_on_clock_time_timeout"]
