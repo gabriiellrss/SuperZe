@@ -169,7 +169,6 @@ size = Vector2(19, 36)
 [node name="player" type="CharacterBody2D"]
 collision_mask = 22
 script = ExtResource("1_kthid")
-player_life = 3
 
 [node name="remote" type="RemoteTransform2D" parent="."]
 

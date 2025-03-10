@@ -1,6 +1,6 @@
 [gd_scene load_steps=35 format=3 uid="uid://cstebekd7yrcu"]
 
-[ext_resource type="Script" path="res://area_danger.gd" id="1_7g5es"]
+[ext_resource type="Script" uid="uid://dvifg0a5ne0jr" path="res://area_danger.gd" id="1_7g5es"]
 [ext_resource type="Texture2D" uid="uid://bd6bl24r2wiwo" path="res://Pixel_Woods_Tileset.png" id="1_nw1fg"]
 [ext_resource type="Texture2D" uid="uid://chun55ehm7xqy" path="res://Pixel_Woods_Tileset - Copy.png" id="2_dnccj"]
 [ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="3_agall"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bkn87iye1hknc" path="res://BG_1/Lights 1.png" id="11_7g5es"]
 [ext_resource type="Texture2D" uid="uid://chbww6emclsu4" path="res://BG_1/Lights 2.png" id="12_idak8"]
 [ext_resource type="Texture2D" uid="uid://cs70oonuk1r1e" path="res://BG_2/Woods 1.png" id="13_idak8"]
-[ext_resource type="Script" path="res://control.gd" id="13_or3ub"]
+[ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="13_or3ub"]
 [ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="14_alwf5"]
 [ext_resource type="Texture2D" uid="uid://cqfgrcedyautl" path="res://BG_2/Lights 2.png" id="14_ecmfo"]
 [ext_resource type="Texture2D" uid="uid://c3huqfl54mtma" path="res://BG_2/Lights 1.png" id="15_77i5e"]

@@ -4,6 +4,7 @@ extends Node2D
 @onready var player_scene = preload("res://cenas/player.tscn")
 @onready var camera := $camera as Camera2D
 @onready var control: Control = $HUD/Control
+@onready var quiz_control: Control = $perguntas/Control
 
 # Chamado quando o nó entra na árvore da cena
 func _ready() -> void:
@@ -12,6 +13,9 @@ func _ready() -> void:
 	Globals.player.player_has_died.connect(reload_game)
 	control.time_is_up.connect(reload_game)
 	Globals.player_life = 3
+	
+	if quiz_control:
+		quiz_control.resposta_errada.connect(reload_game)
 
 func reload_game():
 	if player:
