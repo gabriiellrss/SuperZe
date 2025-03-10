@@ -2,8 +2,8 @@ extends CanvasLayer
 
 @onready var color_rect: ColorRect = $ColorRect
 
-#func _ready() -> void:
-	#show_new_scene()
+func _ready() -> void:
+	show_new_scene()
 
 func change_scene(path, delay = 2.5):
 	var scene_transition = get_tree().create_tween()
