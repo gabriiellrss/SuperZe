@@ -5,8 +5,8 @@ var is_active = false
 @onready var quiz_control: Control = $"../perguntas/Control"
 
 func _on_body_entered(body: Node2D) -> void:
-	quiz_control.visible = true
-	quiz_control.process_mode = Node.PROCESS_MODE_ALWAYS  # 🔥 Reativa os botões
+	#quiz_control.visible = true
+	#quiz_control.process_mode = Node.PROCESS_MODE_ALWAYS  # 🔥 Reativa os botões
 
 	if body.name != "player" or is_active:
 		return
