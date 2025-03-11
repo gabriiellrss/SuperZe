@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dsovspxvlq31f"]
 
-[ext_resource type="Script" uid="uid://d1xb1esimgj30" path="res://scripts/trasition.gd" id="1_wc2bc"]
-[ext_resource type="Shader" uid="uid://ntqwohhrpp1u" path="res://shaders/trasitionShader.gdshader" id="2_fr677"]
-[ext_resource type="Script" uid="uid://cmkupekox0em3" path="res://scripts/color_rect.gd" id="3_c6fkr"]
+[ext_resource type="Script" path="res://scripts/trasition.gd" id="1_wc2bc"]
+[ext_resource type="Shader" path="res://shaders/trasitionShader.gdshader" id="2_fr677"]
+[ext_resource type="Script" path="res://scripts/color_rect.gd" id="3_c6fkr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yl2io"]
 shader = ExtResource("2_fr677")
