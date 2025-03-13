@@ -5,56 +5,53 @@ extends MarginContainer
 
 const MAX_WIDTH = 256
 
-var text = ""
+var text_lines: Array[String] = []
+var current_line = 0
 var letter_index = 0
 
 var letter_display_timer := 0.07
 var space_display_timer := 0.05
-var punctuaction_display_timer := 0.2
+var punctuation_display_timer := 0.2
 
 signal text_display_finished()
 
 func _ready():
 	letter_timer_display.timeout.connect(_on_letter_timer_display_timeout)
 
+func display_text(lines: Array[String]):
+	text_lines = lines
+	current_line = 0
+	show_text()
 
-func display_text(text_to_display: String):
-	text = text_to_display
-	text_label.text = text_to_display
-	
-	await resized 
-	
-	custom_minimum_size.x = min(size.x, MAX_WIDTH)
-	
-	if size.x > MAX_WIDTH:
-		text_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-		await resized
-		await resized
-		custom_minimum_size.y = size.y
-		
-	global_position.x -= size.x / 2
-	global_position.y -= size.y + 24
-	
-	text_label.text  = ""
+func show_text():
+	if current_line >= text_lines.size():
+		queue_free()  # Fecha o diálogo ao terminar todas as falas
+		return
+
+	text_label.text = ""
+	letter_index = 0
 	display_letter()
-	
+
 func display_letter():
-	if letter_index >= text.length():
+	if letter_index >= text_lines[current_line].length():
 		text_display_finished.emit()
 		return
 	
-	text_label.text += text[letter_index]
+	text_label.text += text_lines[current_line][letter_index]
 	letter_index += 1
 	
-	match text[letter_index - 1]:
+	match text_lines[current_line][letter_index - 1]:
 		"!", "?", ",", ".":
-			letter_timer_display.start(punctuaction_display_timer)
+			letter_timer_display.start(punctuation_display_timer)
 		" ":
 			letter_timer_display.start(space_display_timer)
-		"_":
-			letter_timer_display.start(letter_display_timer)
 		_:
-			letter_timer_display.start(letter_display_timer)  # Padrão
+			letter_timer_display.start(letter_display_timer)
 
 func _on_letter_timer_display_timeout() -> void:
 	display_letter()
+
+func _unhandled_input(event: InputEvent):
+	if event.is_action_pressed("advance_message"):
+		current_line += 1
+		show_text()

@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://diw2kuyrnlc6o"]
+
+[ext_resource type="Texture2D" uid="uid://b17loy66f4m54" path="res://assets/PCSS.png" id="1_36s6k"]
+[ext_resource type="Texture2D" uid="uid://bigshvg85l6c" path="res://assets/UI/buttons.png" id="2_yaq4j"]
+[ext_resource type="FontFile" uid="uid://0qdekuey6lad" path="res://assets/Fonts/fontSecond1.ttf" id="3_4jetx"]
+
+[sub_resource type="GDScript" id="GDScript_af7ov"]
+script/source = "extends Node2D
+
+@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var area_2d: Area2D = $Area2D
+
+const lines: Array[String] = [
+	\"Usar senhas fortes (com letras, números e caracteres especiais)\",
+	\"e diferentes para cada conta é uma medida de segurança essencial.\",
+	\" Isso dificulta o acesso de hackers e impede que a invasão de uma conta afete outras.\",
+	
+]
+
+func _unhandled_input(event: InputEvent) -> void:
+	if area_2d.get_overlapping_bodies().size() > 0:
+		sprite_2d.show()
+		if event.is_action_pressed(\"interact\") and not DialogManager.is_message_active:
+			sprite_2d.hide()
+			DialogManager.start_message(global_position, lines)
+	else:
+		sprite_2d.hide()
+		if DialogManager.is_message_active and DialogManager.dialog_box != null:
+			DialogManager.dialog_box.queue_free()
+			DialogManager.is_message_active = false
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fm12p"]
+atlas = ExtResource("1_36s6k")
+region = Rect2(0, 0, 60, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4nntv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fm12p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r62cl"]
+size = Vector2(12, 26)
+
+[node name="warning_sign2" type="Node2D"]
+script = SubResource("GDScript_af7ov")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_4nntv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -21)
+texture = ExtResource("2_yaq4j")
+region_enabled = true
+region_rect = Rect2(0, 3, 15, 12)
+region_filter_clip_enabled = true
+
+[node name="Label" type="Label" parent="Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -10.0
+offset_right = 32.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.56, 0.440001)
+theme_override_colors/font_color = Color(0.223529, 0.203922, 0.341176, 1)
+theme_override_fonts/font = ExtResource("3_4jetx")
+theme_override_font_sizes/font_size = 0
+text = "!"
+metadata/_edit_use_anchors_ = true
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, 9)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_r62cl")

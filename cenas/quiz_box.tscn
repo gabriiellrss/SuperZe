@@ -50,14 +50,18 @@ columns = 2
 
 [node name="Botao1" type="Button" parent="button_margin/GridContainer"]
 layout_mode = 2
+autowrap_mode = 2
 
 [node name="Botao2" type="Button" parent="button_margin/GridContainer"]
 layout_mode = 2
+autowrap_mode = 2
 
 [node name="Botao3" type="Button" parent="button_margin/GridContainer"]
 layout_mode = 2
+autowrap_mode = 2
 
 [node name="Botao4" type="Button" parent="button_margin/GridContainer"]
 layout_mode = 2
+autowrap_mode = 2
 
 [connection signal="timeout" from="letter_timer_display" to="." method="_on_letter_timer_display_timeout"]

@@ -26,6 +26,8 @@ func configurar(pergunta, opcoes, resposta):
 	botao_1.text = opcoes[0]
 	botao_2.text = opcoes[1]
 	botao_3.text = opcoes[2]
+	botao_4.text = opcoes[3]
+
 
 	resposta_correta_var = resposta  # Define a resposta correta
 
@@ -49,6 +51,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_BotaoB_pressed()  # Chama a função do botão B
 		elif event.is_action_pressed("quiz_opcao_3"):  # Se a tecla associada à ação 'quiz_opcao_3' for pressionada
 			_on_BotaoC_pressed()  # Chama a função do botão C
+		elif event.is_action_pressed("quiz_opcao_4"):  # Se a tecla associada à ação 'quiz_opcao_3' for pressionada
+			_on_BotaoD_pressed()  # Chama a função do botão d
 		else:
 			print("Tecla pressionada não registrada.")
 
@@ -61,3 +65,6 @@ func _on_BotaoB_pressed():
 
 func _on_BotaoC_pressed():
 	verificar_resposta("C")
+
+func _on_BotaoD_pressed():
+	verificar_resposta("D")

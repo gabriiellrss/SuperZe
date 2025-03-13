@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://biqwfanapnasm"
+path="res://.godot/imported/Zé da Manga - Sound Effects BR.WAV-c3f569ae0cc4a93901e45dc240f581cc.sample"
+
+[deps]
+
+source_file="res://audios/Zé da Manga - Sound Effects BR.WAV"
+dest_files=["res://.godot/imported/Zé da Manga - Sound Effects BR.WAV-c3f569ae0cc4a93901e45dc240f581cc.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

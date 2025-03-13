@@ -17,6 +17,11 @@ var knockback_vector := Vector2.ZERO
 
 @onready var anim := $anim as AnimatedSprite2D
 @onready var remote_transform := $remote as RemoteTransform2D
+@onready var jump_sfx: AudioStreamPlayer = $Jump_sfx
+@onready var double_jump_sfx: AudioStreamPlayer = $DoubleJump_sfx
+@onready var shot: AudioStreamPlayer = $Shot
+@onready var kill: AudioStreamPlayer = $kill
+@onready var shot_2d: AudioStreamPlayer2D = $Shot2D
 
 signal player_has_died()
 
@@ -40,9 +45,11 @@ func _physics_process(delta):
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
 			is_jumping = true
+			jump_sfx.play()
 		elif air_jumps > 0:
 			velocity.y = HIGH_JUMP_VELOCITY
 			air_jumps -= 1
+			jump_sfx.play()
 			is_jumping = true
 
 	if Input.is_action_just_released("jump") and velocity.y < JUMP_VELOCITY / 2:
@@ -125,7 +132,7 @@ func follow_camera(camera):
 	remote_transform.remote_path = camera_path
 
 func take_demage(knockback_force := Vector2.ZERO, duration:= 0.25):
-	
+	kill.play()
 	if Globals.player_life > 0:
 		Globals.player_life -= 1
 	else: 
@@ -150,3 +157,4 @@ func shoot_bullet():
 	add_sibling(bullet_instance)
 	bullet_instance.global_position = $Marker2D.global_position
 	shoot_cooldown.start()
+	shot_2d.play()

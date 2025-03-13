@@ -1,11 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://c06kvie67hw67"]
+[gd_scene load_steps=11 format=3 uid="uid://c06kvie67hw67"]
 
-[ext_resource type="Texture2D" uid="uid://3txq4gotv73p" path="res://assets/free-city-backgrounds-pixel-art/city 3/6.png" id="1_dyokc"]
-[ext_resource type="Texture2D" uid="uid://lb0wirsx021l" path="res://assets/player/download.jpg" id="2_ab8ep"]
-[ext_resource type="Texture2D" uid="uid://ckquj3qf35orl" path="res://assets/player/standing.png" id="3_d6q6h"]
+[ext_resource type="Script" uid="uid://bm0p6ermkn78t" path="res://cenas/titlescreen.gd" id="1_23kea"]
+[ext_resource type="Texture2D" uid="uid://cn4j8cg3xce1p" path="res://assets/free-city-backgrounds-pixel-art/city 1/10.png" id="1_mmfij"]
+[ext_resource type="Texture2D" uid="uid://dy3cq5hqyjihu" path="res://cenas/Prancheta 5logoPng1x_resized (1).png" id="2_23kea"]
+[ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="3_hwg0w"]
+[ext_resource type="Texture2D" uid="uid://lkdoh8hxpqmb" path="res://cenas/SPZE-ezgif.com-crop (1).png" id="4_6xvqw"]
+[ext_resource type="AudioStream" uid="uid://cu76m80uij8hv" path="res://audios/The Weeknd - Save Your Tears (Instrumental).MP3" id="6_hwg0w"]
 
-[sub_resource type="Theme" id="Theme_1738y"]
-Button/colors/font_color = Color(1, 1, 1, 1)
+[sub_resource type="Theme" id="Theme_23kea"]
+
+[sub_resource type="Theme" id="Theme_hwg0w"]
+
+[sub_resource type="Theme" id="Theme_6xvqw"]
+
+[sub_resource type="Environment" id="Environment_23kea"]
+background_mode = 3
+glow_enabled = true
 
 [node name="TITLESCREEN" type="Control"]
 layout_mode = 3
@@ -14,12 +24,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_23kea")
 
 [node name="BG" type="TextureRect" parent="."]
+modulate = Color(0.466181, 0.466181, 0.466181, 1)
 layout_mode = 2
 offset_right = 640.0
 offset_bottom = 360.0
-texture = ExtResource("1_dyokc")
+texture = ExtResource("1_mmfij")
 expand_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -39,25 +51,62 @@ size_flags_horizontal = 4
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
+theme_override_constants/separation = 20
 
 [node name="game_Logo" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-texture = ExtResource("2_ab8ep")
+texture = ExtResource("2_23kea")
 
-[node name="start" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme = SubResource("Theme_1738y")
-text = "Kuzhin"
 
-[node name="creditos" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="start" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "credits "
+theme = SubResource("Theme_23kea")
+theme_type_variation = &"FlatButton"
+theme_override_colors/font_hover_pressed_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_hover_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_focus_color = Color(0.55564, 0.763186, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.578547, 0.422463, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("3_hwg0w")
+text = "Start Game"
 
-[node name="quit_btn" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="creditos" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "QUT GAME"
+theme = SubResource("Theme_hwg0w")
+theme_type_variation = &"FlatButton"
+theme_override_colors/font_hover_pressed_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_hover_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_focus_color = Color(0.55564, 0.763186, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.578547, 0.422463, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("3_hwg0w")
+text = "Creditos"
+
+[node name="quit_btn" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_6xvqw")
+theme_type_variation = &"FlatButton"
+theme_override_colors/font_hover_pressed_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_hover_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_focus_color = Color(0.55564, 0.763186, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.578547, 0.422463, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("3_hwg0w")
+text = "Quit Game"
 
 [node name="mochi" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("3_d6q6h")
+texture = ExtResource("4_6xvqw")
 expand_mode = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+auto_translate_mode = 1
+stream = ExtResource("6_hwg0w")
+volume_db = -33.583
+autoplay = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_23kea")
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/creditos" to="." method="_on_creditos_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/quit_btn" to="." method="_on_quit_btn_pressed"]

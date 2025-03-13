@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cstebekd7yrcu"]
+[gd_scene load_steps=33 format=3 uid="uid://cstebekd7yrcu"]
 
 [ext_resource type="Texture2D" uid="uid://g6rw0nwgs8ov" path="res://Dungeon Tile Set.png" id="1_7oglr"]
 [ext_resource type="Texture2D" uid="uid://c1faaj7ivfvmb" path="res://deco.png" id="2_7pt15"]
@@ -8,11 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://cfxjwip0qv2ui" path="res://cenas/virus.tscn" id="5_li56n"]
 [ext_resource type="PackedScene" uid="uid://de1olpkswj3g3" path="res://virus_4.tscn" id="6_gm7hu"]
 [ext_resource type="PackedScene" uid="uid://cu5boo61t28hl" path="res://virus_5.tscn" id="7_r2i50"]
-[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="8_33wjk"]
+[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="8_33wjk"]
 [ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="9_fw8vh"]
 [ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="10_li56n"]
 [ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="11_gm7hu"]
 [ext_resource type="PackedScene" uid="uid://dsovspxvlq31f" path="res://cenas/transition.tscn" id="13_gm7hu"]
+[ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="13_r2i50"]
+[ext_resource type="AudioStream" uid="uid://f7u7uqjly85p" path="res://audios/bg-redTerror.MP3" id="15_33wjk"]
 
 [sub_resource type="GDScript" id="GDScript_agall"]
 resource_name = "world"
@@ -22,6 +24,7 @@ script/source = "extends Node2D
 @onready var player_scene = preload(\"res://cenas/player.tscn\")
 @onready var camera := $camera as Camera2D
 @onready var control: Control = $HUD/Control
+@onready var quiz_control: Control = $perguntas/Control
 
 # Chamado quando o nó entra na árvore da cena
 func _ready() -> void:
@@ -30,12 +33,22 @@ func _ready() -> void:
 	Globals.player.player_has_died.connect(reload_game)
 	control.time_is_up.connect(reload_game)
 	Globals.player_life = 3
+	
+	# Conexão para quando o Quiz emite os sinais
+	var quiz_node = get_tree().current_scene.get_node_or_null(\"QuizContainer\")
+	if quiz_node:
+		quiz_node.connect(\"resposta_errada\", Callable(self, \"reload_game\"))
+		quiz_node.connect(\"resposta_correta\", Callable(self, \"proxima_fase\"))
+
+# Adicione a nova função para caso de resposta correta
+func proxima_fase():
+	print(\"✅ Passando para a próxima fase!\") # Implementar lógica aqui para prosseguir com o jogo
 
 func reload_game():
 	if player:
 		player.queue_free()  # Remove o jogador antigo
 		await get_tree().process_frame  # Aguarda 1 frame para garantir a remoção
-
+	
 	# Criar novo jogador corretamente
 	player = player_scene.instantiate()
 	add_child(player)
@@ -55,6 +68,13 @@ func _on_area_danger_body_entered(body: Node2D) -> void:
 	if body.name == \"player\":
 		print(\"O player está aqui\")
 		body.take_demage(Vector2(0, -250))
+
+func _on_limbo_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
+	if body.name == \"player\":
+		print(\"O player está aqui\")
+		body.queue_free()
+		await get_tree().create_timer(2.0).timeout
+		reload_game()
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nw1fg"]
@@ -397,7 +417,7 @@ region = Rect2(96, 0, 16, 16)
 atlas = ExtResource("10_li56n")
 region = Rect2(112, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_r2i50"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_33wjk"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -429,7 +449,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AnimatedTexture" id="AnimatedTexture_33wjk"]
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_348dx"]
 frames = 8
 frame_1/duration = 1.0
 frame_2/duration = 1.0
@@ -441,6 +461,8 @@ frame_7/duration = 1.0
 
 [node name="world" type="Node2D"]
 script = SubResource("GDScript_agall")
+
+[node name="trasition" parent="." instance=ExtResource("13_gm7hu")]
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(1.00066, 0.998357)
@@ -456,8 +478,8 @@ layer_3/name = "Layer5"
 layer_3/tile_data = PackedInt32Array(1507352, 262145, 12, 1507360, 393217, 12, 1507353, 327681, 12, 1507354, 327681, 12, 1507355, 327681, 12, 1507356, 327681, 12, 1507357, 327681, 12, 1507358, 327681, 12, 1507359, 327681, 12, 1638424, 262145, 12, 1638425, 327681, 12, 1638426, 327681, 12, 1638427, 327681, 12, 1638428, 327681, 12, 1638429, 327681, 12, 1638430, 327681, 12, 1638431, 327681, 12, 1638432, 393217, 12, 1769496, 262145, 12, 1769497, 327681, 12, 1769498, 327681, 12, 1769499, 327681, 12, 1769500, 327681, 12, 1769501, 327681, 12, 1769502, 327681, 12, 1769503, 327681, 12, 1769504, 393217, 12, 1900568, 262145, 12, 1900569, 327681, 12, 1900570, 327681, 12, 1900571, 327681, 12, 1900572, 327681, 12, 1900573, 327681, 12, 1900574, 327681, 12, 1900575, 327681, 12, 1900576, 393217, 12, 2031640, 262145, 12, 2031641, 327681, 12, 2031642, 327681, 12, 2031643, 327681, 12, 2031644, 327681, 12, 2031645, 327681, 12, 2031646, 327681, 12, 2031647, 327681, 12, 2031648, 393217, 12, 2162712, 262145, 12, 2162713, 327681, 12, 2162714, 327681, 12, 2162715, 327681, 12, 2162716, 327681, 12, 2162717, 327681, 12, 2162718, 327681, 12, 2162719, 327681, 12, 2162720, 393217, 12, 786433, 655361, 1610612750, 720897, 720897, 1610612750, 655361, 786433, 1610612750, 589825, 851969, 1610612750, 327681, 655361, 1610612750, 262145, 720897, 1610612750, 196609, 786433, 1610612750, 131073, 851969, 1610612750, 655417, 720897, 12, 327737, 720897, 12, 196649, 720897, 12, 589828, 786433, 12, 458770, 786433, 12, 852038, 786433, 12, 393282, 786433, 12, 131150, 655361, 12, 589826, 589825, 6, 786543, 655361, 1, 852079, 655361, 2, 786544, 720897, 1, 852080, 720897, 2, 917600, 655361, 1, 983136, 655361, 2, 917601, 720897, 1, 983137, 720897, 2, 786511, 655361, 1, 852047, 655361, 2, 786512, 720897, 1, 852048, 720897, 2, 917622, 655361, 1, 983158, 655361, 2, 917623, 720897, 1, 983159, 720897, 2, 786565, 655361, 1, 852101, 655361, 2, 786566, 720897, 1, 852102, 720897, 2, 1114244, 262145, 13, 1114245, 327681, 13, 1114246, 786433, 1342177294, 1114234, 262145, 13, 1114235, 327681, 13, 1114236, 393217, 13, 1114227, 262145, 13, 1114228, 327681, 13, 1114229, 393217, 13, 1114219, 262145, 13, 1114220, 327681, 13, 1114221, 393217, 13, 1114208, 262145, 13, 1114209, 327681, 13, 1114210, 393217, 13, 1114196, 262145, 13, 1114197, 327681, 13, 1114198, 393217, 13, 1114186, 262145, 13, 1114187, 327681, 13, 1114188, 393217, 13, 1114191, 262145, 13, 1114192, 327681, 13, 1114193, 393217, 13, 1114204, 262145, 13, 1114205, 327681, 13, 1114206, 393217, 13, 786514, 720897, 14, 786515, 786433, 14, 1179745, 720897, 268435470, 1179744, 786433, 268435470, 786559, 720897, 268435470, 786558, 786433, 268435470, 1048710, 720897, 1342177294, 786560, 851969, 14, 786557, 655361, 14, 983174, 655361, 1342177294, 786513, 655361, 14, 786516, 851969, 14)
 
 [node name="goal" parent="." instance=ExtResource("3_li56n")]
-position = Vector2(158, 270)
-next_level = "res://world-01.tscn"
+position = Vector2(2117, 156)
+next_level = "res://world-03.tscn"
 
 [node name="AreaDanger" type="Area2D" parent="."]
 position = Vector2(434, 356)
@@ -547,6 +569,9 @@ position = Vector2(59, 234)
 position = Vector2(0, -29)
 zoom = Vector2(1.5, 1.5)
 
+[node name="transition" parent="." instance=ExtResource("13_gm7hu")]
+visible = false
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="HUD"]
@@ -583,19 +608,20 @@ size_flags_vertical = 0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HUD/Control/container/coinsContainer"]
 visible = false
 position = Vector2(-9, 12)
-sprite_frames = SubResource("SpriteFrames_r2i50")
+sprite_frames = SubResource("SpriteFrames_33wjk")
 
 [node name="coinsIcons" type="TextureRect" parent="HUD/Control/container/coinsContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = SubResource("AnimatedTexture_33wjk")
+texture = SubResource("AnimatedTexture_348dx")
 
 [node name="coinsCounter" type="Label" parent="HUD/Control/container/coinsContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("13_r2i50")
 text = "000"
 
 [node name="scoreContainer" type="HBoxContainer" parent="HUD/Control/container"]
@@ -607,12 +633,14 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("13_r2i50")
 text = "Score:"
 
 [node name="scoreCounter2" type="Label" parent="HUD/Control/container/scoreContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("13_r2i50")
 text = "000"
 
 [node name="timeContainer" type="HBoxContainer" parent="HUD/Control/container"]
@@ -624,12 +652,14 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("13_r2i50")
 text = "Tempo:"
 
 [node name="timeCounter2" type="Label" parent="HUD/Control/container/timeContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("13_r2i50")
 text = "000"
 
 [node name="lifeContainer" type="HBoxContainer" parent="HUD/Control/container"]
@@ -637,16 +667,26 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
+[node name="lifeCounter2" type="Label" parent="HUD/Control/container/lifeContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("13_r2i50")
+text = "Vida:"
+
 [node name="lifeCounter" type="Label" parent="HUD/Control/container/lifeContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Tempo:"
+theme_override_fonts/font = ExtResource("13_r2i50")
 
 [node name="pause_menu" parent="HUD/Control" instance=ExtResource("11_gm7hu")]
 
-[node name="transition" parent="." instance=ExtResource("13_gm7hu")]
-visible = false
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+auto_translate_mode = 1
+stream = ExtResource("15_33wjk")
+volume_db = -15.405
+autoplay = true
 
 [connection signal="body_entered" from="AreaDanger" to="." method="_on_area_danger_body_entered"]
 [connection signal="timeout" from="HUD/Control/clock_time" to="HUD/Control" method="_on_clock_time_timeout"]

@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwv1uk8q8dnkw"]
+[gd_scene load_steps=6 format=3 uid="uid://cwv1uk8q8dnkw"]
 
 [ext_resource type="Script" uid="uid://cr4q4c8fo72pt" path="res://cenas/pause_menu.gd" id="1_jsi4g"]
+[ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="2_m0p7e"]
+
+[sub_resource type="Theme" id="Theme_m0p7e"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_jsi4g"]
 action = &"ui_cancel"
@@ -34,12 +37,25 @@ grow_vertical = 2
 [node name="Resume_btn" type="Button" parent="menu_holder"]
 layout_mode = 2
 size_flags_vertical = 4
+theme = SubResource("Theme_m0p7e")
+theme_override_colors/font_hover_pressed_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_hover_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_focus_color = Color(0.55564, 0.763186, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.578547, 0.422463, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("2_m0p7e")
 shortcut = SubResource("Shortcut_m0p7e")
 text = "Resume Game"
+flat = true
 
 [node name="quit_btn" type="Button" parent="menu_holder"]
 layout_mode = 2
+theme_override_colors/font_hover_pressed_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_hover_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_colors/font_focus_color = Color(0.55564, 0.763186, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.863146, 0.636947, 1.15514e-06, 1)
+theme_override_fonts/font = ExtResource("2_m0p7e")
 text = "Quit GAME"
+flat = true
 
 [connection signal="pressed" from="menu_holder/Resume_btn" to="." method="_on_resume_btn_pressed"]
 [connection signal="pressed" from="menu_holder/quit_btn" to="." method="_on_quit_btn_pressed"]

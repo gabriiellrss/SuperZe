@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjbudusmyf37p"]
+[gd_scene load_steps=5 format=3 uid="uid://bjbudusmyf37p"]
 
 [ext_resource type="Script" uid="uid://lxngxmixy3wn" path="res://quizTela.gd" id="1_d12qj"]
 [ext_resource type="Texture2D" uid="uid://bmirqugr2io6a" path="res://assets/Dialog_Box(16 x 16).png" id="2_8oton"]
+[ext_resource type="FontFile" uid="uid://c0awo6lskoydh" path="res://assets/Fonts/fontPrincipal.ttf" id="3_8oton"]
 [ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="3_kir2o"]
 
 [node name="Control" type="Control"]
@@ -11,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 script = ExtResource("1_d12qj")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -22,6 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="background" type="NinePatchRect" parent="MarginContainer"]
+modulate = Color(0.111, 0.111, 0.111, 0.547)
 layout_mode = 2
 texture = ExtResource("2_8oton")
 region_rect = Rect2(0, 0, 16, 16)
@@ -32,16 +35,17 @@ patch_margin_bottom = 4
 
 [node name="label_margin" type="MarginContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 16
 
 [node name="text_label" type="Label" parent="MarginContainer/label_margin"]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_kir2o")
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_8oton")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="button_margin" type="MarginContainer" parent="MarginContainer"]
@@ -55,16 +59,37 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-columns = 2
 
 [node name="Botao1" type="Button" parent="MarginContainer/button_margin/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("3_kir2o")
+theme_override_font_sizes/font_size = 10
+action_mode = 0
+flat = true
 
 [node name="Botao2" type="Button" parent="MarginContainer/button_margin/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("3_kir2o")
+theme_override_font_sizes/font_size = 10
+flat = true
 
 [node name="Botao3" type="Button" parent="MarginContainer/button_margin/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("3_kir2o")
+theme_override_font_sizes/font_size = 10
+flat = true
 
 [node name="Botao4" type="Button" parent="MarginContainer/button_margin/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("3_kir2o")
+theme_override_font_sizes/font_size = 10
+flat = true

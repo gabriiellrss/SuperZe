@@ -16,9 +16,13 @@ func _on_body_entered(body: Node2D) -> void:
 			quiz.connect("resposta_correta", Callable(get_parent(), "proxima_fase"))
 			
 			quiz.configurar(
-				"Qual é a capital do Brasil?",
-				["A) Brasília", "B) Rio de Janeiro", "C) São Paulo", "C) São Paulo"],
-				"A"
+				"Segurança na Internet: Qual é a melhor prática para proteger suas senhas online?",
+				[
+				"A) Usar a mesma senha para todas as contas", 
+				"B) Compartilhar suas senhas com amigos confiáveis", 
+				"C) Utilizar senhas fortes e diferentes para cada conta", 
+				"D) Armazenar todas as senhas em um arquivo de texto simples"],
+				"C"
 			)
 		else:
 			print("Erro: QuizContainer não encontrado na cena!")

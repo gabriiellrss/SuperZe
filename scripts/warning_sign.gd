@@ -11,14 +11,16 @@ const lines: Array[String] = [
 	"Vai!!!"
 ]
 
+var dialog_instance = null  # Armazena o diálogo localmente
+
 func _unhandled_input(event: InputEvent) -> void:
 	if area_2d.get_overlapping_bodies().size() > 0:
 		sprite_2d.show()
-		if event.is_action_pressed("interact") and not DialogManager.is_message_active:
+		if event.is_action_pressed("interact") and dialog_instance == null:
 			sprite_2d.hide()
-			DialogManager.start_message(global_position, lines)
+			dialog_instance = DialogManager.start_message(global_position, lines)
 	else:
 		sprite_2d.hide()
-		if DialogManager.is_message_active and DialogManager.dialog_box != null:
-			DialogManager.dialog_box.queue_free()
-			DialogManager.is_message_active = false
+		if dialog_instance != null:
+			dialog_instance.queue_free()
+			dialog_instance = null

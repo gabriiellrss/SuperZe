@@ -1,9 +1,9 @@
-[gd_scene load_steps=35 format=3 uid="uid://cstebekd7yrcu"]
+[gd_scene load_steps=37 format=3 uid="uid://cstebekd7yrcu"]
 
 [ext_resource type="Script" uid="uid://dvifg0a5ne0jr" path="res://area_danger.gd" id="1_7g5es"]
 [ext_resource type="Texture2D" uid="uid://bd6bl24r2wiwo" path="res://Pixel_Woods_Tileset.png" id="1_nw1fg"]
 [ext_resource type="Texture2D" uid="uid://chun55ehm7xqy" path="res://Pixel_Woods_Tileset - Copy.png" id="2_dnccj"]
-[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="3_agall"]
+[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="3_agall"]
 [ext_resource type="PackedScene" uid="uid://dp8r5g67us011" path="res://cenas/gold_coin.tscn" id="8_nsla6"]
 [ext_resource type="Texture2D" uid="uid://oiq53vgr7hk8" path="res://BG_1/BG.png" id="9_64xsk"]
 [ext_resource type="Texture2D" uid="uid://dlef64jqowl2p" path="res://BG_1/Woods 1.png" id="10_agall"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://c3huqfl54mtma" path="res://BG_2/Lights 1.png" id="15_77i5e"]
 [ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="15_k57mx"]
 [ext_resource type="PackedScene" uid="uid://dsovspxvlq31f" path="res://cenas/transition.tscn" id="16_00sa7"]
+[ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="16_cqw3b"]
+[ext_resource type="AudioStream" uid="uid://f7u7uqjly85p" path="res://audios/bg-redTerror.MP3" id="18_dloui"]
 
 [sub_resource type="GDScript" id="GDScript_agall"]
 resource_name = "world"
@@ -596,7 +598,7 @@ region = Rect2(96, 0, 16, 16)
 atlas = ExtResource("14_alwf5")
 region = Rect2(112, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_t8lua"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_dloui"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -628,7 +630,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AnimatedTexture" id="AnimatedTexture_r7scb"]
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_rnyx1"]
 frames = 8
 frame_1/duration = 1.0
 frame_2/duration = 1.0
@@ -709,7 +711,6 @@ position = Vector2(935, 191)
 
 [node name="player" parent="." instance=ExtResource("3_agall")]
 position = Vector2(59, 234)
-player_life = 10
 
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2(0, -29)
@@ -950,6 +951,11 @@ position = Vector2(3291, -331)
 scale = Vector2(-2.16003, 2.42286)
 texture = ExtResource("15_77i5e")
 
+[node name="trasition" parent="." instance=ExtResource("16_00sa7")]
+
+[node name="transition" parent="." instance=ExtResource("16_00sa7")]
+visible = false
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="HUD"]
@@ -986,19 +992,20 @@ size_flags_vertical = 0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HUD/Control/container/coinsContainer"]
 visible = false
 position = Vector2(-9, 12)
-sprite_frames = SubResource("SpriteFrames_t8lua")
+sprite_frames = SubResource("SpriteFrames_dloui")
 
 [node name="coinsIcons" type="TextureRect" parent="HUD/Control/container/coinsContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = SubResource("AnimatedTexture_r7scb")
+texture = SubResource("AnimatedTexture_rnyx1")
 
 [node name="coinsCounter" type="Label" parent="HUD/Control/container/coinsContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("16_cqw3b")
 text = "000"
 
 [node name="scoreContainer" type="HBoxContainer" parent="HUD/Control/container"]
@@ -1010,12 +1017,14 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("16_cqw3b")
 text = "Score:"
 
 [node name="scoreCounter2" type="Label" parent="HUD/Control/container/scoreContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("16_cqw3b")
 text = "000"
 
 [node name="timeContainer" type="HBoxContainer" parent="HUD/Control/container"]
@@ -1027,12 +1036,14 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("16_cqw3b")
 text = "Tempo:"
 
 [node name="timeCounter2" type="Label" parent="HUD/Control/container/timeContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("16_cqw3b")
 text = "000"
 
 [node name="lifeContainer" type="HBoxContainer" parent="HUD/Control/container"]
@@ -1040,16 +1051,26 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
+[node name="lifeCounter2" type="Label" parent="HUD/Control/container/lifeContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("16_cqw3b")
+text = "Vida:"
+
 [node name="lifeCounter" type="Label" parent="HUD/Control/container/lifeContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Tempo:"
+theme_override_fonts/font = ExtResource("16_cqw3b")
 
 [node name="pause_menu" parent="HUD/Control" instance=ExtResource("15_k57mx")]
 
-[node name="transition" parent="." instance=ExtResource("16_00sa7")]
-visible = false
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+auto_translate_mode = 1
+stream = ExtResource("18_dloui")
+volume_db = -15.405
+autoplay = true
 
 [connection signal="body_entered" from="AreaDanger" to="." method="_on_area_danger_body_entered"]
 [connection signal="timeout" from="HUD/Control/clock_time" to="HUD/Control" method="_on_clock_time_timeout"]
