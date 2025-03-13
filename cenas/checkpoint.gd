@@ -17,6 +17,10 @@ func activate_checkpoint():
 	print("O checkpoint está funcionando patrão")
 	anim.play("default")
 	is_active = true
+	$AnimatedSprite2D.modulate.r = 1.0  # Aumenta o vermelho
+	$AnimatedSprite2D.modulate.g = 5.0  # Mantém o verde normal
+	$AnimatedSprite2D.modulate.b = 1.0  # Mantém o azul normal
+
 
 #func _on_animated_sprite_2d_animation_finished() -> void:
 	#if anim.animation == "raising":

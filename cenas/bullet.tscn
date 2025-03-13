@@ -1,9 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c5t5kw2j8yaxp"]
+[gd_scene load_steps=9 format=3 uid="uid://baorwaglhp117"]
 
 [ext_resource type="Texture2D" uid="uid://bcbm4el0bo86g" path="res://assets/New_All_Fire_Bullet_Pixel_16x16/All_Fire_Bullet_Pixel_16x16_02.png" id="1_3mdtr"]
-[ext_resource type="Script" uid="uid://rcjemxeiertr" path="res://scripts/animated_sprite_2d.gd" id="2_owdmt"]
+[ext_resource type="Script" uid="uid://d2xejm6yihksf" path="res://scripts/bullet.gd" id="1_h4vll"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bnddm"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_5iash"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h1wgl"]
 atlas = ExtResource("1_3mdtr")
@@ -21,7 +21,7 @@ region = Rect2(130, 176, 18, 16)
 atlas = ExtResource("1_3mdtr")
 region = Rect2(148, 176, 18, 16)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_miqu1"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_h4vll"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -41,16 +41,19 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="bullet" type="RigidBody2D"]
-collision_layer = 8
-collision_mask = 3
+[node name="bullet" type="Area2D" groups=["bullets"]]
+collision_layer = 64
+collision_mask = 129
+script = ExtResource("1_h4vll")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(106, 48)
-shape = SubResource("CircleShape2D_bnddm")
+shape = SubResource("CircleShape2D_5iash")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(107, 47)
-sprite_frames = SubResource("SpriteFrames_miqu1")
-frame_progress = 0.662083
-script = ExtResource("2_owdmt")
+sprite_frames = SubResource("SpriteFrames_h4vll")
+frame_progress = 0.389783
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+scale = Vector2(1.15, 1.1)
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

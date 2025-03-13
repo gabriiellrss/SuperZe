@@ -1,12 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://cu5boo61t28hl"]
+[gd_scene load_steps=16 format=3 uid="uid://cu5boo61t28hl"]
 
 [ext_resource type="Script" uid="uid://by8827kqa0mnx" path="res://virus_5.gd" id="1_xbrbd"]
 [ext_resource type="Texture2D" uid="uid://cj1tnxo21bexi" path="res://VIRUSNW.png" id="2_5yvt5"]
+[ext_resource type="PackedScene" uid="uid://cidayjmmnsoj0" path="res://cenas/hitbox_bullets.tscn" id="2_pibqq"]
 [ext_resource type="Texture2D" uid="uid://bmcxsyaq6fls1" path="res://diev4.png" id="3_pibqq"]
 [ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="4_5cevh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xbrbd"]
 size = Vector2(36.8494, 27.5112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5cevh"]
+size = Vector2(54, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_77i5e"]
 atlas = ExtResource("2_5yvt5")
@@ -72,29 +76,35 @@ collision_mask = 35
 script = ExtResource("1_xbrbd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Teste"]]
-position = Vector2(247.5, 141)
 scale = Vector2(1.38401, 1.30856)
 shape = SubResource("RectangleShape2D_xbrbd")
 
+[node name="hitboxBullets" parent="." instance=ExtResource("2_pibqq")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitboxBullets"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_5cevh")
+debug_color = Color(0.683788, 0.500769, 0.0689428, 0.42)
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(241, 144)
+position = Vector2(-6, 2)
 scale = Vector2(0.395851, 0.333149)
 sprite_frames = SubResource("SpriteFrames_moyiv")
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
-position = Vector2(326.667, 156.667)
+position = Vector2(8, 6)
 target_position = Vector2(15, 0)
 collision_mask = 6
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
-position = Vector2(160, 156.667)
+position = Vector2(-11, 7)
 target_position = Vector2(-15, 0)
 collision_mask = 6
 
 [node name="hitbox" parent="." groups=["Teste", "enemies"] instance=ExtResource("4_5cevh")]
 
 [node name="collision" type="CollisionShape2D" parent="hitbox" groups=["Teste", "enemies"]]
-position = Vector2(247.5, 122.568)
+position = Vector2(0, -18)
 scale = Vector2(2.71538, -0.579744)
 shape = SubResource("RectangleShape2D_5yvt5")
 debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)

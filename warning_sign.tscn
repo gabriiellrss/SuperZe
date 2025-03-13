@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://8d6xp8j2xocc"]
+
+[ext_resource type="Script" uid="uid://btd8s1ih1cd6a" path="res://scripts/warning_sign.gd" id="1_8s3ri"]
+[ext_resource type="Texture2D" uid="uid://b17loy66f4m54" path="res://assets/PCSS.png" id="2_8s3ri"]
+[ext_resource type="Texture2D" uid="uid://bigshvg85l6c" path="res://assets/UI/buttons.png" id="2_fm12p"]
+[ext_resource type="FontFile" uid="uid://0qdekuey6lad" path="res://assets/Fonts/fontSecond1.ttf" id="4_2ebs3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fm12p"]
+atlas = ExtResource("2_8s3ri")
+region = Rect2(0, 0, 60, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2ebs3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fm12p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_moyiv"]
+size = Vector2(12, 26)
+
+[node name="warning_sign" type="Node2D"]
+script = ExtResource("1_8s3ri")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_2ebs3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -21)
+texture = ExtResource("2_fm12p")
+region_enabled = true
+region_rect = Rect2(0, 3, 15, 12)
+region_filter_clip_enabled = true
+
+[node name="Label" type="Label" parent="Sprite2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -10.0
+offset_right = 32.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.56, 0.440001)
+theme_override_colors/font_color = Color(0.223529, 0.203922, 0.341176, 1)
+theme_override_fonts/font = ExtResource("4_2ebs3")
+theme_override_font_sizes/font_size = 0
+text = "!"
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, 9)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_moyiv")

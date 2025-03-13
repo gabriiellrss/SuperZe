@@ -1,16 +1,18 @@
-[gd_scene load_steps=13 format=3 uid="uid://cfxjwip0qv2ui"]
+[gd_scene load_steps=15 format=3 uid="uid://cfxjwip0qv2ui"]
 
 [ext_resource type="Texture2D" uid="uid://dijjo4njbp0ky" path="res://assets/VIRUS.png" id="1_bwr4g"]
 [ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="2_rnutm"]
+[ext_resource type="PackedScene" uid="uid://cidayjmmnsoj0" path="res://cenas/hitbox_bullets.tscn" id="3_rnutm"]
 
 [sub_resource type="GDScript" id="GDScript_7k104"]
 resource_name = "enemy"
 script/source = "extends CharacterBody2D
 
 @export var enemy_score:= 100
-
 @export var speed: float = 100.0  # Velocidade do inimigo
 @export var gravity: float = 500.0  # Gravidade aplicada quando ele cai
+@export var health: int = 3  # Adicionando vida ao inimigo
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var raycast_left: RayCast2D = $RayCastLeft
 @onready var raycast_right: RayCast2D = $RayCastRight
@@ -23,6 +25,7 @@ func _ready() -> void:
 	sprite.play(\"default\")  # Ativa a animação
 
 func _physics_process(delta: float) -> void:
+	
 	if is_dying:
 		velocity.y += gravity * delta  # Aplica gravidade para cair
 		move_and_slide()
@@ -37,10 +40,24 @@ func _physics_process(delta: float) -> void:
 		direction *= -1  # Inverte a direção do movimento
 		sprite.scale.x *= -1  # Espelha o sprite para o outro lado
 
-func take_damage():
-	if is_dying:
-		return
+func voltarAoNormal():
+	sprite.modulate = Color(1, 1, 1)  # Fica vermelho no impacto
+	particles.emitting = true
 
+func take_damage():
+	kill_enemy()  # Chama a função que reduz a vida antes de eliminar o inimigo totalmente
+
+func take_damage_reduced():
+	health -= 1  # Reduz uma vida
+	sprite.modulate = Color(1, 0, 0)  
+	particles.emitting = true  # Ativa as partículas
+	if health <= 0:
+		kill_enemy()  # Se a vida acabar, mata o inimigo totalmente
+		return
+	await get_tree().create_timer(1).timeout
+	voltarAoNormal()
+
+func kill_enemy():
 	is_dying = true  # Marca que o inimigo está morrendo
 	sprite.modulate = Color(1, 0, 0)  # Fica vermelho no impacto
 	particles.emitting = true  # Ativa as partículas
@@ -115,6 +132,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbqij"]
 size = Vector2(188.334, 34.9688)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rnutm"]
+size = Vector2(17.366, 36.8238)
+
 [node name="virus" type="CharacterBody2D" groups=["Teste", "enemies"]]
 scale = Vector2(0.3, 0.3)
 collision_layer = 4
@@ -147,6 +167,15 @@ collision_mask = 6
 position = Vector2(240.834, 65.5156)
 shape = SubResource("RectangleShape2D_wbqij")
 debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
+
+[node name="hitboxBullets" parent="." instance=ExtResource("3_rnutm")]
+position = Vector2(233.333, 136.667)
+scale = Vector2(11.7087, 4.07346)
+
+[node name="collisionBullets" type="CollisionShape2D" parent="hitboxBullets"]
+position = Vector2(0.71172, 5.31899)
+shape = SubResource("RectangleShape2D_rnutm")
+debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 emitting = false

@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjbudusmyf37p"]
+
+[ext_resource type="Script" uid="uid://lxngxmixy3wn" path="res://quizTela.gd" id="1_d12qj"]
+[ext_resource type="Texture2D" uid="uid://bmirqugr2io6a" path="res://assets/Dialog_Box(16 x 16).png" id="2_8oton"]
+[ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="3_kir2o"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d12qj")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="NinePatchRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_8oton")
+region_rect = Rect2(0, 0, 16, 16)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="label_margin" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+
+[node name="text_label" type="Label" parent="MarginContainer/label_margin"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_kir2o")
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="button_margin" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/button_margin"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 2
+
+[node name="Botao1" type="Button" parent="MarginContainer/button_margin/GridContainer"]
+layout_mode = 2
+
+[node name="Botao2" type="Button" parent="MarginContainer/button_margin/GridContainer"]
+layout_mode = 2
+
+[node name="Botao3" type="Button" parent="MarginContainer/button_margin/GridContainer"]
+layout_mode = 2
+
+[node name="Botao4" type="Button" parent="MarginContainer/button_margin/GridContainer"]
+layout_mode = 2

@@ -14,14 +14,21 @@ func _ready() -> void:
 	control.time_is_up.connect(reload_game)
 	Globals.player_life = 3
 	
-	if quiz_control:
-		quiz_control.resposta_errada.connect(reload_game)
+	# Conexão para quando o Quiz emite os sinais
+	var quiz_node = get_tree().current_scene.get_node_or_null("QuizContainer")
+	if quiz_node:
+		quiz_node.connect("resposta_errada", Callable(self, "reload_game"))
+		quiz_node.connect("resposta_correta", Callable(self, "proxima_fase"))
+
+# Adicione a nova função para caso de resposta correta
+func proxima_fase():
+	print("✅ Passando para a próxima fase!") # Implementar lógica aqui para prosseguir com o jogo
 
 func reload_game():
 	if player:
 		player.queue_free()  # Remove o jogador antigo
 		await get_tree().process_frame  # Aguarda 1 frame para garantir a remoção
-
+	
 	# Criar novo jogador corretamente
 	player = player_scene.instantiate()
 	add_child(player)
@@ -41,3 +48,10 @@ func _on_area_danger_body_entered(body: Node2D) -> void:
 	if body.name == "player":
 		print("O player está aqui")
 		body.take_demage(Vector2(0, -250))
+
+func _on_limbo_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
+	if body.name == "player":
+		print("O player está aqui")
+		body.queue_free()
+		await get_tree().create_timer(2.0).timeout
+		reload_game()

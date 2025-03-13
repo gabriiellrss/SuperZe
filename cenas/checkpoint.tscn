@@ -1,26 +1,68 @@
-[gd_scene load_steps=6 format=3 uid="uid://df1vvfnomfqwp"]
+[gd_scene load_steps=16 format=3 uid="uid://df1vvfnomfqwp"]
 
 [ext_resource type="Script" uid="uid://vwae0mich4jw" path="res://cenas/checkpoint.gd" id="1_fboou"]
-[ext_resource type="Texture2D" uid="uid://bkeagfbdpi8y5" path="res://assets/objects/sign.png" id="2_hdxf0"]
+[ext_resource type="Texture2D" uid="uid://kahfq21m5w7n" path="res://assets/chekpointframes/CHK-ezgif.com-crop (1).png" id="2_bbywv"]
+[ext_resource type="Texture2D" uid="uid://c2odq5n4yq05h" path="res://assets/chekpointframes/CHK-ezgif.com-crop (2).png" id="3_msgvv"]
+[ext_resource type="Texture2D" uid="uid://cgtjpo1v3y74t" path="res://assets/chekpointframes/CHK-ezgif.com-crop (3).png" id="4_2cddd"]
+[ext_resource type="Texture2D" uid="uid://mmub6pt1a5bx" path="res://assets/chekpointframes/CHK-ezgif.com-crop (4).png" id="5_44yqq"]
+[ext_resource type="Texture2D" uid="uid://dddamjlfv4cks" path="res://assets/chekpointframes/CHK-ezgif.com-crop (5).png" id="6_k8hmn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bbywv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ysaax"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_02dpx"]
-atlas = ExtResource("2_hdxf0")
-region = Rect2(0, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_y021f"]
+atlas = ExtResource("2_bbywv")
+region = Rect2(0, 0, 262, 416)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohg7s"]
+atlas = ExtResource("3_msgvv")
+region = Rect2(0, 0, 263, 416)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8byr"]
+atlas = ExtResource("4_2cddd")
+region = Rect2(0, 0, 263, 416)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lxk7k"]
+atlas = ExtResource("5_44yqq")
+region = Rect2(0, 0, 263, 416)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4t1vk"]
+atlas = ExtResource("6_k8hmn")
+region = Rect2(0, 0, 263, 416)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_meaxv"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_02dpx")
+"texture": SubResource("AtlasTexture_y021f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohg7s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8byr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lxk7k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4t1vk")
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 4.0
 }]
 
+[sub_resource type="Environment" id="Environment_msgvv"]
+background_mode = 3
+glow_enabled = true
+glow_bloom = 0.24
+glow_blend_mode = 1
+
 [node name="checkpoint" type="Area2D"]
+modulate = Color(1, 0.992157, 1, 1)
+material = SubResource("ShaderMaterial_bbywv")
 script = ExtResource("1_fboou")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -28,8 +70,14 @@ position = Vector2(0, 7)
 shape = SubResource("RectangleShape2D_ysaax")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(14.917, 1, 1, 1)
+position = Vector2(0, 6)
+scale = Vector2(0.05, 0.05)
 sprite_frames = SubResource("SpriteFrames_meaxv")
-frame_progress = 0.117898
+frame_progress = 0.274428
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_msgvv")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

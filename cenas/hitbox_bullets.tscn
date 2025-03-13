@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cidayjmmnsoj0"]
+
+[ext_resource type="Script" uid="uid://dspj4gpy2dflg" path="res://cenas/hitbox_bullets.gd" id="1_ykxnn"]
+
+[node name="hitboxBullets" type="Area2D"]
+collision_layer = 128
+collision_mask = 64
+script = ExtResource("1_ykxnn")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

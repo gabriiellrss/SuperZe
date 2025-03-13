@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #393457;
+        font-family: Gamer, Gamer;
+        font-size: 12px;
+      }
+    </style>
+  </defs>
+  <g id="Camada_1-2" data-name="Camada 1">
+    <image width="48" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAgCAYAAABU1PscAAAAAXNSR0IArs4c6QAAASVJREFUWIXtlzEWgjAMhqPPI8EAk3dwgMm5R/AIHKEzkw7cgUkHvRNOfQ9o0hQo1GK/MSUhf4CQAEQi/80BM2ZJ0WH21+eBXu8TLSGV/PN9H9jztAQAOxFbFmAQkEpeYSPCawGypOg4qODK3xRDnXM5YDEo36NR0Qyop8edAZjfAGUbi3AuYClTC6AJqJuWDGA68wX6BLBEbZPfugCnsUFWEsRNoDeTlWQDqmuul/PAXjetlX+elmwX7EP+B8RNoIlxrcyVv20bXuVP7Ns/EokEBNlGKX6tE6w2TlO4LoAmgJsY87Qkk/BRAG2UWAo3TWLjgMKmAFlSdH0R+xunQ2N/AkJbaNCPeEmiddNqu4CLuBTkQoMxZaGZ6+9soaGwXUh8+QfHF4JZIFwUcHeeAAAAAElFTkSuQmCC"/>
+    <text class="cls-1" transform="translate(7.29 10.74)"><tspan x="0" y="0">!</tspan></text>
+  </g>
+</svg>
