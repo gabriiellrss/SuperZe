@@ -1,0 +1,88 @@
+[gd_scene load_steps=11 format=3 uid="uid://c5315mxogksim"]
+
+[ext_resource type="Texture2D" uid="uid://bjn1s2wmdk6wh" path="res://vrs.png" id="1_f1ax3"]
+[ext_resource type="Script" uid="uid://n21dveixys6x" path="res://virusav.gd" id="1_pmh40"]
+[ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="3_cfnbo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ef3l1"]
+size = Vector2(32.1529, 34.1892)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fke0h"]
+atlas = ExtResource("1_f1ax3")
+region = Rect2(0, 0, 1020, 1456)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5th5"]
+atlas = ExtResource("1_f1ax3")
+region = Rect2(1020, 0, 1020, 1456)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5b0b"]
+atlas = ExtResource("1_f1ax3")
+region = Rect2(2040, 0, 1020, 1456)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8nbr"]
+atlas = ExtResource("1_f1ax3")
+region = Rect2(3060, 0, 1020, 1456)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3h7gu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fke0h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5th5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k5b0b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s8nbr")
+}],
+"loop": true,
+"name": &"V4",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"morto",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2lcj"]
+size = Vector2(16.5723, 7.13458)
+
+[node name="VIRUSAV" type="CharacterBody2D" groups=["Teste", "enemies"]]
+script = ExtResource("1_pmh40")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Teste"]]
+position = Vector2(249.75, 152.658)
+scale = Vector2(1.38401, 1.32547)
+shape = SubResource("RectangleShape2D_ef3l1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(251, 152)
+scale = Vector2(0.0388118, 0.0335706)
+sprite_frames = SubResource("SpriteFrames_3h7gu")
+animation = &"V4"
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(326.667, 156.667)
+target_position = Vector2(15, 0)
+collision_mask = 6
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(160, 156.667)
+target_position = Vector2(-15, 0)
+collision_mask = 6
+
+[node name="hitbox" parent="." groups=["Teste", "enemies"] instance=ExtResource("3_cfnbo")]
+
+[node name="collision" type="CollisionShape2D" parent="hitbox" groups=["Teste", "enemies"]]
+position = Vector2(250, 130)
+scale = Vector2(2.71538, -0.579744)
+shape = SubResource("RectangleShape2D_c2lcj")
+debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+one_shot = true
