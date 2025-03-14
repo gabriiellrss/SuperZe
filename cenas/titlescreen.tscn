@@ -102,7 +102,6 @@ expand_mode = 2
 auto_translate_mode = 1
 stream = ExtResource("6_hwg0w")
 volume_db = -33.583
-autoplay = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_23kea")

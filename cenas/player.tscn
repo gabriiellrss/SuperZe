@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dv1abdnr2w04x"]
+[gd_scene load_steps=44 format=3 uid="uid://dv1abdnr2w04x"]
 
 [ext_resource type="Script" uid="uid://cddyyoe80sqsj" path="res://scripts/my_player.gd" id="1_kthid"]
 [ext_resource type="Texture2D" uid="uid://57ymftksjvx7" path="res://assets/superze-ezgif.com-crop.png" id="2_xojfc"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://had3dpujt1es" path="res://assets/a625f29a-d7e2-4a06-99d9-ee20ef043a92.png" id="3_xojfc"]
 [ext_resource type="Texture2D" uid="uid://cqtcpud63mlbe" path="res://assets/zz.png" id="5_15dsx"]
 [ext_resource type="AudioStream" uid="uid://dpnbucrwcv4mg" path="res://audios/jump_sfx.wav" id="6_4y2i1"]
+[ext_resource type="Texture2D" uid="uid://bwkdssqdoubj5" path="res://assets/zcc.png" id="6_mp0j6"]
 [ext_resource type="AudioStream" uid="uid://b0jkncelajfem" path="res://audios/doubleJump_sfx.wav" id="7_ogt8j"]
 [ext_resource type="AudioStream" uid="uid://11bqqys2y1d0" path="res://audios/shot.wav" id="7_rijvs"]
 [ext_resource type="AudioStream" uid="uid://biqwfanapnasm" path="res://audios/Zé da Manga - Sound Effects BR.WAV" id="8_rijvs"]
@@ -100,6 +101,34 @@ region = Rect2(0, 0, 124, 149)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vtxll"]
 atlas = ExtResource("5_15dsx")
 region = Rect2(124, 0, 124, 149)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vaqx"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(0, 0, 125, 147)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4uu3"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(125, 0, 125, 147)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_luhlb"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(250, 0, 125, 147)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_821w2"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(353, 0, 119, 147)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldhcr"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(472, 0, 119, 147)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3yeh"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(609, 0, 126, 147)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqqv0"]
+atlas = ExtResource("6_mp0j6")
+region = Rect2(741, 0, 126, 147)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rijvs"]
 atlas = ExtResource("5_15dsx")
@@ -225,6 +254,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_1vaqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u4uu3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_luhlb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_821w2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ldhcr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3yeh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqqv0")
+}],
+"loop": true,
+"name": &"shootRun",
+"speed": 11.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_rijvs")
 }],
 "loop": true,
@@ -249,8 +304,8 @@ shape = SubResource("RectangleShape2D_3rysa")
 position = Vector2(0, -8)
 scale = Vector2(0.274193, 0.279333)
 sprite_frames = SubResource("SpriteFrames_2a8fw")
-animation = &"idle"
-frame_progress = 0.90461
+animation = &"shootRun"
+frame_progress = 0.0442224
 
 [node name="camera" type="Camera2D" parent="."]
 visible = false
@@ -282,6 +337,10 @@ one_shot = true
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(11, -5)
+scale = Vector2(2.16887, 1.83201)
+
+[node name="Marker2D2" type="Marker2D" parent="."]
+position = Vector2(12, 0)
 scale = Vector2(2.16887, 1.83201)
 
 [node name="Jump_sfx" type="AudioStreamPlayer" parent="."]

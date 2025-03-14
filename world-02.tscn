@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cfxjwip0qv2ui" path="res://cenas/virus.tscn" id="5_li56n"]
 [ext_resource type="PackedScene" uid="uid://de1olpkswj3g3" path="res://virus_4.tscn" id="6_gm7hu"]
 [ext_resource type="PackedScene" uid="uid://cu5boo61t28hl" path="res://virus_5.tscn" id="7_r2i50"]
-[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="8_33wjk"]
+[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="8_33wjk"]
 [ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="9_fw8vh"]
 [ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="10_li56n"]
 [ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="11_gm7hu"]

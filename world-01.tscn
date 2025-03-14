@@ -335,7 +335,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_84rnc")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7g5es"]
-size = Vector2(10.5313, 149.5)
+size = Vector2(1.41598, 84)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_64xsk"]
 texture = ExtResource("1_nw1fg")
@@ -1491,7 +1491,8 @@ func _unhandled_input(event: InputEvent) -> void:
 [node name="world" type="Node2D"]
 script = ExtResource("1_w8loh")
 
-[node name="trasition" parent="." instance=ExtResource("2_evko6")]
+[node name="transition" parent="." instance=ExtResource("2_evko6")]
+visible = false
 
 [node name="goal" parent="." instance=ExtResource("2_em0ia")]
 position = Vector2(10546, 234)
@@ -1802,6 +1803,7 @@ collision_layer = 2
 script = ExtResource("1_7g5es")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDanger"]
+position = Vector2(-2.5, 64.875)
 scale = Vector2(4.24001, 1)
 shape = SubResource("RectangleShape2D_7g5es")
 debug_color = Color(0.906026, 0.26749, 0.375738, 0.42)
@@ -1825,7 +1827,7 @@ collision_layer = 2
 script = ExtResource("1_7g5es")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDanger3"]
-position = Vector2(34.3809, 82)
+position = Vector2(34.334, 78)
 scale = Vector2(4.24001, 1)
 shape = SubResource("RectangleShape2D_7g5es")
 debug_color = Color(0.906026, 0.26749, 0.375738, 0.42)
@@ -2144,7 +2146,6 @@ shape = SubResource("RectangleShape2D_ieoi2")
 auto_translate_mode = 1
 stream = ExtResource("27_evko6")
 volume_db = -15.405
-autoplay = true
 
 [node name="warning_sign" parent="." instance=ExtResource("21_84rnc")]
 position = Vector2(146, 255)

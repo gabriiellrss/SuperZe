@@ -13,6 +13,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var air_jumps = 0
 var is_jumping = false
 var is_shooting = false
+var is_shootrun = false
 var knockback_vector := Vector2.ZERO
 
 @onready var anim := $anim as AnimatedSprite2D
@@ -25,10 +26,9 @@ var knockback_vector := Vector2.ZERO
 
 signal player_has_died()
 
-# Aceleração e desaceleração para o movimento
 const ACCELERATION = 600.0
 const DECELERATION = 800.0
-const AIR_CONTROL_FACTOR = 0.6  # Controla o movimento no ar (quanto mais baixo, menos controle)
+const AIR_CONTROL_FACTOR = 0.6  
 
 func _physics_process(delta):
 	# Aplica a gravidade
@@ -40,7 +40,7 @@ func _physics_process(delta):
 		air_jumps = MAX_AIR_JUMPS
 		is_jumping = false
 
-	# Controle de pulo (pequeno e alto)
+	# Controle de pulo
 	if Input.is_action_just_pressed("jump"):
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
@@ -53,80 +53,76 @@ func _physics_process(delta):
 			is_jumping = true
 
 	if Input.is_action_just_released("jump") and velocity.y < JUMP_VELOCITY / 2:
-		velocity.y = JUMP_VELOCITY / 2  # Permite um pulo menor ao soltar o botão
+		velocity.y = JUMP_VELOCITY / 2  
 
-	if Input.is_action_pressed("shoot"):
-		is_shooting = true
-		if shoot_cooldown.is_stopped():
-			shoot_bullet()
-	else:
-		is_shooting = false
-	# Movimento permitido no ar e no chão
+	# Atualiza se está atirando
+	is_shooting = Input.is_action_pressed("shoot")
+	if is_shooting and shoot_cooldown.is_stopped():
+		shoot_bullet()
+
+	# Movimento
 	var direction = Input.get_axis("move_left", "move_right")
-	
-	if Input.is_action_pressed("move_left"):
-		if sign($Marker2D.position.x) == 1:
-			$Marker2D.position.x *= -1
-			
-	if Input.is_action_pressed("move_right"):
-		if sign($Marker2D.position.x) == -1:
-			$Marker2D.position.x *= -1
-			
-	# Aceleração/desaceleração no chão
+
+	# Atualiza posição do Marker2D para o lado correto
+	if direction < 0 and $Marker2D.position.x > 0:
+		$Marker2D.position.x *= -1
+		$Marker2D2.position.x *= -1
+	elif direction > 0 and $Marker2D.position.x < 0:
+		$Marker2D.position.x *= -1
+		$Marker2D2.position.x *= -1
+
+	# Aceleração e desaceleração no chão
 	if direction != 0:
 		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0, DECELERATION * delta)
 
-	# Movimento no ar (controle reduzido)
+	# Movimento no ar
 	if not is_on_floor():
 		velocity.x = move_toward(velocity.x, direction * SPEED, ACCELERATION * delta * AIR_CONTROL_FACTOR)
 
-	# Troca as animações (bloqueia "run" no ar)
+	# Define se está correndo e atirando
+	is_shootrun = direction != 0 and is_shooting
+
+	# Troca de animações
 	if is_on_floor():
-		if direction != 0:
-			anim.play("run")  # Animação de correr
+		if is_shootrun:
+			anim.play("shootRun")
+		elif direction != 0:
+			anim.play("run")
 		elif is_shooting:
 			anim.play("shoot")
 		else:
-			anim.play("idle")  # Animação de ficar parado
+			anim.play("idle")
 	else:
 		if velocity.y < 0:
 			if air_jumps == 0:
 				anim.play("doubleJump")
 			elif is_shooting:
-				anim.play("shootJump")  # Animação de pulo atirando
+				anim.play("shootJump")
 			else:
 				anim.play("jump")
 		elif velocity.y > 0:
-			# Se estava atirando antes de cair, usa a animação "shortFall"
 			if is_shooting:
 				anim.play("shortFall")
 			else:
-				anim.play("fall")  # Animação de queda normal
+				anim.play("fall")
 
-	# Corrige o espelhamento do personagem dependendo da direção do movimento
+	# Corrige espelhamento do personagem
 	if direction != 0:
-		$anim.flip_h = (direction < 0)  # Usa flip_h ao invés de mexer no scale.x
-		
-	
+		$anim.flip_h = (direction < 0)
+
 	if knockback_vector != Vector2.ZERO:
 		velocity = knockback_vector
 
 	move_and_slide()
 
-
 func _on_hurtbox_body_entered(body: Node2D) -> void:
-	#if body.is_in_group("Teste"):
-		#print("foi alguma coisa")
-		#anim.play("dead")
-		#queue_free()
-	
 	if $ray_right.is_colliding():
 		take_demage(Vector2(-400, -400))
 	elif $ray_left.is_colliding():
 		take_demage(Vector2(400, -400))
-		
+
 func follow_camera(camera):
 	var camera_path = camera.get_path()
 	remote_transform.remote_path = camera_path
@@ -138,7 +134,7 @@ func take_demage(knockback_force := Vector2.ZERO, duration:= 0.25):
 	else: 
 		emit_signal("player_has_died")
 		queue_free()
-	
+
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
 		
@@ -149,12 +145,20 @@ func take_demage(knockback_force := Vector2.ZERO, duration:= 0.25):
 
 func shoot_bullet():
 	var bullet_instance = BULLET_SCENE.instantiate()
+
+	# Define direção do bullet
 	if sign($Marker2D.position.x) == 1:
 		bullet_instance.set_directon(1)
 	else:
 		bullet_instance.set_directon(-1)
-			
+	
+	# **Escolhe onde o bullet será spawnado**
+	if is_shootrun:
+		bullet_instance.global_position = $Marker2D2.global_position
+	else:
+		bullet_instance.global_position = $Marker2D.global_position
+	
+	# Adiciona o bullet e inicia cooldown
 	add_sibling(bullet_instance)
-	bullet_instance.global_position = $Marker2D.global_position
 	shoot_cooldown.start()
 	shot_2d.play()
