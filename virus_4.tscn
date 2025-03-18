@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://de1olpkswj3g3"]
+[gd_scene load_steps=16 format=3 uid="uid://de1olpkswj3g3"]
 
 [ext_resource type="Script" uid="uid://c6ui8kd2squr0" path="res://virus_4.gd" id="1_d55a1"]
 [ext_resource type="Texture2D" uid="uid://dlc8cg3r2e8t8" path="res://assets/VIRUSZADA.png" id="2_oeqc4"]
 [ext_resource type="Texture2D" uid="uid://cm2ppee4tb3hm" path="res://assets/VIRUSDANO.png" id="3_h5aik"]
 [ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="3_l7mg1"]
+[ext_resource type="PackedScene" uid="uid://cidayjmmnsoj0" path="res://cenas/hitbox_bullets.tscn" id="5_x10kh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ou2mw"]
 size = Vector2(142.664, 112.242)
@@ -66,6 +67,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_66hvv"]
 size = Vector2(188.334, 34.9688)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6dtgh"]
+size = Vector2(208, 190)
+
 [node name="VIRUS4" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 35
@@ -102,3 +106,10 @@ debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 emitting = false
 one_shot = true
+
+[node name="hitboxBullets" parent="." instance=ExtResource("5_x10kh")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitboxBullets"]
+position = Vector2(243, 139)
+shape = SubResource("RectangleShape2D_6dtgh")
+debug_color = Color(0.802411, 0.418734, 5.77569e-07, 0.42)

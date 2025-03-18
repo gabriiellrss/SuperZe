@@ -4,10 +4,9 @@ extends Node2D
 @onready var area_2d: Area2D = $Area2D
 
 const lines: Array[String] = [
-	"Mantenha o sistema seguro!",
-	"Mate os vírus e evite que se espalhem pela rede!",
-	"Os vírus se alimentam de conexões fracas.",
-	"Proteja o sistema com firewalls antes que eles invadam!",
+	"Boa!!",
+	"Você está na segunda fase do jogo!",
+	"Conclua as questões e mate os inimigos",
 	"Vai!!!"
 ]
 

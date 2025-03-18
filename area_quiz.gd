@@ -16,13 +16,13 @@ func _on_body_entered(body: Node2D) -> void:
 			quiz.connect("resposta_correta", Callable(get_parent(), "proxima_fase"))
 			
 			quiz.configurar(
-				"Segurança na Internet: Qual é a melhor prática para proteger suas senhas online?",
+				"Criptografia: Qual é o principal objetivo da criptografia?",
 				[
-				"A) Usar a mesma senha para todas as contas", 
-				"B) Compartilhar suas senhas com amigos confiáveis", 
-				"C) Utilizar senhas fortes e diferentes para cada conta", 
-				"D) Armazenar todas as senhas em um arquivo de texto simples"],
-				"C"
+				"A) Impedir que o computador de um usuário fique lento", 
+				"B) Proteger os dados durante a transmissão para que apenas destinatários autorizados possam lê-los", 
+				"C) Melhorar a estética de uma página web", 
+				"D) Garantir que os dados possam ser acessados facilmente por qualquer usuário"],
+				"B"
 			)
 		else:
 			print("Erro: QuizContainer não encontrado na cena!")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cstebekd7yrcu"]
+[gd_scene load_steps=38 format=3 uid="uid://cstebekd7yrcu"]
 
 [ext_resource type="Texture2D" uid="uid://g6rw0nwgs8ov" path="res://Dungeon Tile Set.png" id="1_7oglr"]
 [ext_resource type="Texture2D" uid="uid://c1faaj7ivfvmb" path="res://deco.png" id="2_7pt15"]
@@ -8,13 +8,16 @@
 [ext_resource type="PackedScene" uid="uid://cfxjwip0qv2ui" path="res://cenas/virus.tscn" id="5_li56n"]
 [ext_resource type="PackedScene" uid="uid://de1olpkswj3g3" path="res://virus_4.tscn" id="6_gm7hu"]
 [ext_resource type="PackedScene" uid="uid://cu5boo61t28hl" path="res://virus_5.tscn" id="7_r2i50"]
-[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="8_33wjk"]
+[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="8_33wjk"]
 [ext_resource type="Script" uid="uid://bgdqpjgiu420q" path="res://control.gd" id="9_fw8vh"]
 [ext_resource type="Texture2D" uid="uid://0y5y2rjwls3v" path="res://assets/objects/coin_gold.png" id="10_li56n"]
 [ext_resource type="PackedScene" uid="uid://cwv1uk8q8dnkw" path="res://cenas/pause_menu.tscn" id="11_gm7hu"]
 [ext_resource type="PackedScene" uid="uid://dsovspxvlq31f" path="res://cenas/transition.tscn" id="13_gm7hu"]
 [ext_resource type="FontFile" uid="uid://cewuk8as3g360" path="res://assets/RevMiniPixel.ttf" id="13_r2i50"]
 [ext_resource type="AudioStream" uid="uid://f7u7uqjly85p" path="res://audios/bg-redTerror.MP3" id="15_33wjk"]
+[ext_resource type="PackedScene" uid="uid://df1vvfnomfqwp" path="res://cenas/checkpoint.tscn" id="16_348dx"]
+[ext_resource type="PackedScene" uid="uid://8d6xp8j2xocc" path="res://warning_sign.tscn" id="17_07rhn"]
+[ext_resource type="PackedScene" uid="uid://dim8tbefnpes1" path="res://cenas/area_quiz.tscn" id="18_c41cq"]
 
 [sub_resource type="GDScript" id="GDScript_agall"]
 resource_name = "world"
@@ -459,10 +462,75 @@ frame_5/duration = 1.0
 frame_6/duration = 1.0
 frame_7/duration = 1.0
 
+[sub_resource type="GDScript" id="GDScript_c41cq"]
+script/source = "extends Area2D
+
+@export var quiz_scene: PackedScene  # Garante que a cena do Quiz será atribuída no editor
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.name == \"player\":
+		print(\"player entrou\")
+		var quiz = quiz_scene.instantiate()  # Cria o Quiz
+		var quiz_container = get_tree().current_scene.get_node_or_null(\"QuizContainer\")
+		
+		if quiz_container:
+			quiz_container.add_child(quiz)
+			
+			# Conectando os sinais ao World (usando Callable)
+			quiz.connect(\"resposta_errada\", Callable(get_parent(), \"reload_game\"))
+			quiz.connect(\"resposta_correta\", Callable(get_parent(), \"proxima_fase\"))
+			
+			quiz.configurar(
+				\"Uso seguro da Internet: Qual é uma boa prática para garantir um uso seguro da Internet?\",
+				[
+				\"A) Ignorar as atualizações de segurança do sistema\", 
+				\"B) Compartilhar informações pessoais em sites não confiáveis\", 
+				\"C) Manter os programas e sistemas operacionais atualizados \", 
+				\"D) Usar redes Wi-Fi públicas sem nenhuma proteção\"],
+				\"C\"
+			)
+		else:
+			print(\"Erro: QuizContainer não encontrado na cena!\")
+"
+
+[sub_resource type="GDScript" id="GDScript_q46sw"]
+script/source = "extends Area2D
+
+@export var quiz_scene: PackedScene  # Garante que a cena do Quiz será atribuída no editor
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.name == \"player\":
+		print(\"player entrou\")
+		var quiz = quiz_scene.instantiate()  # Cria o Quiz
+		var quiz_container = get_tree().current_scene.get_node_or_null(\"QuizContainer\")
+		
+		if quiz_container:
+			quiz_container.add_child(quiz)
+			
+			# Conectando os sinais ao World (usando Callable)
+			quiz.connect(\"resposta_errada\", Callable(get_parent(), \"reload_game\"))
+			quiz.connect(\"resposta_correta\", Callable(get_parent(), \"proxima_fase\"))
+			
+			quiz.configurar(
+				\"Privacidade: Qual ação ajuda a proteger sua privacidade online?\",
+				[
+				\"A) Utilizar configurações de privacidade nas redes sociais\", 
+				\"B) Compartilhar constantemente sua localização em tempo real\", 
+				\"C) Deixar as informações de perfil acessíveis a todos\", 
+				\"D) Não utilizar senhas para acessar contas pessoais\"],
+				\"A\"
+			)
+		else:
+			print(\"Erro: QuizContainer não encontrado na cena!\")
+"
+
 [node name="world" type="Node2D"]
 script = SubResource("GDScript_agall")
 
+[node name="QuizContainer" type="CanvasLayer" parent="."]
+
 [node name="trasition" parent="." instance=ExtResource("13_gm7hu")]
+visible = false
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(1.00066, 0.998357)
@@ -552,7 +620,7 @@ position = Vector2(857, 219)
 [node name="virus3" parent="." instance=ExtResource("5_li56n")]
 position = Vector2(589, 208)
 
-[node name="VIRUS4" parent="." groups=["Teste", "enemies"] instance=ExtResource("6_gm7hu")]
+[node name="VIRUS4" parent="." groups=["Teste", "bullets", "enemies"] instance=ExtResource("6_gm7hu")]
 position = Vector2(779, 110)
 scale = Vector2(0.183515, 0.209329)
 
@@ -687,6 +755,25 @@ auto_translate_mode = 1
 stream = ExtResource("15_33wjk")
 volume_db = -15.405
 autoplay = true
+
+[node name="checkpoint" parent="." instance=ExtResource("16_348dx")]
+position = Vector2(764, 271)
+
+[node name="warning_sign" parent="." instance=ExtResource("17_07rhn")]
+position = Vector2(118, 274)
+
+[node name="AreaQuiz" parent="." instance=ExtResource("18_c41cq")]
+position = Vector2(148, 275)
+
+[node name="AreaQuiz2" parent="." instance=ExtResource("18_c41cq")]
+position = Vector2(183, 275)
+script = SubResource("GDScript_c41cq")
+quiz_scene = null
+
+[node name="AreaQuiz3" parent="." instance=ExtResource("18_c41cq")]
+position = Vector2(163, 274)
+script = SubResource("GDScript_q46sw")
+quiz_scene = null
 
 [connection signal="body_entered" from="AreaDanger" to="." method="_on_area_danger_body_entered"]
 [connection signal="timeout" from="HUD/Control/clock_time" to="HUD/Control" method="_on_clock_time_timeout"]

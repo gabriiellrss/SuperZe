@@ -1,9 +1,9 @@
 [gd_scene load_steps=37 format=3 uid="uid://cstebekd7yrcu"]
 
 [ext_resource type="Script" uid="uid://dvifg0a5ne0jr" path="res://area_danger.gd" id="1_7g5es"]
+[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="1_dloui"]
 [ext_resource type="Texture2D" uid="uid://bd6bl24r2wiwo" path="res://Pixel_Woods_Tileset.png" id="1_nw1fg"]
 [ext_resource type="Texture2D" uid="uid://chun55ehm7xqy" path="res://Pixel_Woods_Tileset - Copy.png" id="2_dnccj"]
-[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="3_agall"]
 [ext_resource type="PackedScene" uid="uid://dp8r5g67us011" path="res://cenas/gold_coin.tscn" id="8_nsla6"]
 [ext_resource type="Texture2D" uid="uid://oiq53vgr7hk8" path="res://BG_1/BG.png" id="9_64xsk"]
 [ext_resource type="Texture2D" uid="uid://dlef64jqowl2p" path="res://BG_1/Woods 1.png" id="10_agall"]
@@ -709,12 +709,11 @@ position = Vector2(1084, 226)
 [node name="gold_coin13" parent="coins" instance=ExtResource("8_nsla6")]
 position = Vector2(935, 191)
 
-[node name="player" parent="." instance=ExtResource("3_agall")]
-position = Vector2(59, 234)
-
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2(0, -29)
 zoom = Vector2(1.5, 1.5)
+
+[node name="player" parent="." instance=ExtResource("1_dloui")]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
