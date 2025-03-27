@@ -23,4 +23,4 @@ func _on_resume_btn_pressed() -> void:
 
 
 func _on_quit_btn_pressed() -> void:
-	get_tree().quit()
+	get_tree().change_scene_to_file("res://world-01.tscn")

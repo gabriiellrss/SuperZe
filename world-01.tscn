@@ -1584,7 +1584,6 @@ func _unhandled_input(event: InputEvent) -> void:
 script = ExtResource("1_w8loh")
 
 [node name="transition" parent="." instance=ExtResource("2_evko6")]
-visible = false
 
 [node name="goal" parent="." instance=ExtResource("2_em0ia")]
 position = Vector2(10546, 234)
@@ -1995,17 +1994,14 @@ script = SubResource("GDScript_jtd7i")
 [node name="AreaQuiz7" parent="." instance=ExtResource("22_moyiv")]
 position = Vector2(9178, 306)
 script = SubResource("GDScript_xchw0")
-quiz_scene = null
 
 [node name="AreaQuiz8" parent="." instance=ExtResource("22_moyiv")]
 position = Vector2(9639, 355)
 script = SubResource("GDScript_evko6")
-quiz_scene = null
 
 [node name="AreaQuiz9" parent="." instance=ExtResource("22_moyiv")]
 position = Vector2(10511, 251)
 script = SubResource("GDScript_ijj4q")
-quiz_scene = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(464, 107)

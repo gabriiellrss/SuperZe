@@ -565,7 +565,6 @@ script = SubResource("GDScript_agall")
 [node name="QuizContainer" type="CanvasLayer" parent="."]
 
 [node name="trasition" parent="." instance=ExtResource("13_gm7hu")]
-visible = false
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(1.00066, 0.998357)

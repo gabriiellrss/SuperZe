@@ -1,0 +1,168 @@
+[gd_scene load_steps=13 format=3 uid="uid://buxh0f5tw5hlr"]
+
+[ext_resource type="Texture2D" uid="uid://bjn1s2wmdk6wh" path="res://vrs.png" id="1_mp12t"]
+[ext_resource type="PackedScene" uid="uid://dxbd4iyvocbp0" path="res://cenas/hitbox.tscn" id="2_g6jpe"]
+[ext_resource type="PackedScene" uid="uid://cidayjmmnsoj0" path="res://cenas/hitbox_bullets.tscn" id="3_88awm"]
+
+[sub_resource type="GDScript" id="GDScript_7k104"]
+resource_name = "enemy"
+script/source = "extends CharacterBody2D
+
+@export var enemy_score:= 100
+@export var speed: float = 100.0  # Velocidade do inimigo
+@export var gravity: float = 500.0  # Gravidade aplicada quando ele cai
+@export var health: int = 15  # Adicionando vida ao inimigo
+
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var raycast_left: RayCast2D = $RayCastLeft
+@onready var raycast_right: RayCast2D = $RayCastRight
+@onready var particles = $CPUParticles2D  # Pegamos o nó de partículas
+
+var direction: int = 1  # 1 para direita, -1 para esquerda
+var is_dying: bool = false  # Controle para evitar movimento enquanto cai
+
+func _ready() -> void:
+	sprite.play(\"default\")  # Ativa a animação
+
+func _physics_process(delta: float) -> void:
+	
+	if is_dying:
+		velocity.y += gravity * delta  # Aplica gravidade para cair
+		move_and_slide()
+		return  # Sai da função para não mover normalmente
+
+	# Move o inimigo para frente normalmente
+	velocity.x = direction * speed
+	move_and_slide()  # Processa o movimento antes de verificar colisões
+
+	# Verifica se bateu na parede ou se algum dos RayCasts detectou algo
+	if is_on_wall() or (direction == 1 and raycast_right.is_colliding()) or (direction == -1 and raycast_left.is_colliding()):
+		direction *= -1  # Inverte a direção do movimento
+		sprite.scale.x *= -1  # Espelha o sprite para o outro lado
+
+func voltarAoNormal():
+	sprite.modulate = Color(1, 1, 1)  # Fica vermelho no impacto
+	particles.emitting = true
+
+func take_damage():
+	kill_enemy()  # Chama a função que reduz a vida antes de eliminar o inimigo totalmente
+
+func take_damage_reduced():
+	health -= 1  # Reduz uma vida
+	sprite.modulate = Color(1, 0, 0)  
+	particles.emitting = true  # Ativa as partículas
+	if health <= 0:
+		kill_enemy()  # Se a vida acabar, mata o inimigo totalmente
+		return
+	await get_tree().create_timer(1).timeout
+	voltarAoNormal()
+
+func kill_enemy():
+	is_dying = true  # Marca que o inimigo está morrendo
+	sprite.modulate = Color(1, 0, 0)  # Fica vermelho no impacto
+	particles.emitting = true  # Ativa as partículas
+	velocity.x = 0  # Para o movimento horizontal
+	velocity.y = 250  # Dá um impulso inicial para baixo (queda mais rápida)
+
+	# Faz o inimigo piscar rapidamente antes de sumir
+	for i in range(3):  # Pisca 2 vezes bem rápido
+		sprite.visible = false
+		await get_tree().create_timer(0.02).timeout
+		sprite.visible = true
+		await get_tree().create_timer(0.02).timeout
+
+	await get_tree().create_timer(0.2).timeout  # Pequena espera antes de sumir
+	Globals.score += enemy_score
+	queue_free()  # Remove o inimigo da cena
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
+size = Vector2(142.664, 124.135)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6jpe"]
+atlas = ExtResource("1_mp12t")
+region = Rect2(0, 0, 1020, 1456)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88awm"]
+atlas = ExtResource("1_mp12t")
+region = Rect2(1020, 0, 1020, 1456)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myxvk"]
+atlas = ExtResource("1_mp12t")
+region = Rect2(2040, 0, 1020, 1456)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubu1y"]
+atlas = ExtResource("1_mp12t")
+region = Rect2(3060, 0, 1020, 1456)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wujgv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6jpe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88awm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myxvk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubu1y")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbqij"]
+size = Vector2(188.334, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rnutm"]
+size = Vector2(17.366, 52.5352)
+
+[node name="virusBoss" type="CharacterBody2D" groups=["Teste", "enemies"]]
+collision_layer = 4
+collision_mask = 35
+script = SubResource("GDScript_7k104")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Teste"]]
+position = Vector2(0, 7.78115)
+scale = Vector2(1.38401, 1.30856)
+shape = SubResource("RectangleShape2D_4gyqm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(3, -40)
+scale = Vector2(0.184314, 0.184314)
+sprite_frames = SubResource("SpriteFrames_wujgv")
+frame_progress = 0.963507
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(80.667, 21)
+target_position = Vector2(15, 0)
+collision_mask = 6
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-86, 21)
+target_position = Vector2(-15, 0)
+collision_mask = 6
+
+[node name="hitbox" parent="." groups=["Teste", "enemies"] instance=ExtResource("2_g6jpe")]
+
+[node name="collision" type="CollisionShape2D" parent="hitbox" groups=["Teste", "enemies"]]
+position = Vector2(0, -147.5)
+shape = SubResource("RectangleShape2D_wbqij")
+debug_color = Color(0.914886, 0.225782, 0.466424, 0.42)
+
+[node name="hitboxBullets" parent="." instance=ExtResource("3_88awm")]
+scale = Vector2(11.7087, 4.07346)
+
+[node name="collisionBullets" type="CollisionShape2D" parent="hitboxBullets"]
+position = Vector2(0, -7.85571)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_rnutm")
+debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+one_shot = true
