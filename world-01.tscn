@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bsfyf4elilbve" path="res://assets/TileSetLaboratoryv2_ByOleteras/LaboratoryTilesetV2.png" id="2_dnccj"]
 [ext_resource type="PackedScene" uid="uid://bdck4qla7j8fo" path="res://cenas/goal.tscn" id="2_em0ia"]
 [ext_resource type="PackedScene" uid="uid://dsovspxvlq31f" path="res://cenas/transition.tscn" id="2_evko6"]
-[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://cenas/player.tscn" id="3_agall"]
+[ext_resource type="PackedScene" uid="uid://dv1abdnr2w04x" path="res://player.tscn" id="3_agall"]
 [ext_resource type="Texture2D" uid="uid://gpc6bml3spga" path="res://assets/Free-GUI-for-Cyberpunk-Pixel-Art1/1 Frames/FrameMap.png" id="3_yv26t"]
 [ext_resource type="PackedScene" uid="uid://cu5boo61t28hl" path="res://virus_5.tscn" id="5_moyiv"]
 [ext_resource type="PackedScene" uid="uid://dp8r5g67us011" path="res://cenas/gold_coin.tscn" id="8_nsla6"]
@@ -1628,7 +1628,6 @@ position = Vector2(96, 256)
 position = Vector2(128, 256)
 
 [node name="gold_coin6" parent="coins" instance=ExtResource("8_nsla6")]
-visible = false
 position = Vector2(264, 104)
 
 [node name="gold_coin7" parent="coins" instance=ExtResource("8_nsla6")]
@@ -2021,7 +2020,6 @@ motion_scale = Vector2(0.3, 1)
 motion_mirroring = Vector2(864, 0)
 
 [node name="texture" type="Sprite2D" parent="ParallaxBackground/08"]
-modulate = Color(0.683077, 0.683077, 0.683077, 1)
 position = Vector2(252, -648)
 scale = Vector2(2, 2)
 texture = ExtResource("12_84rnc")
@@ -2056,7 +2054,6 @@ motion_scale = Vector2(0.3, 1)
 motion_mirroring = Vector2(864, 0)
 
 [node name="texture" type="Sprite2D" parent="ParallaxBackground/05"]
-modulate = Color(0.683077, 0.683077, 0.683077, 1)
 position = Vector2(252, 0)
 scale = Vector2(2, 2)
 texture = ExtResource("12_84rnc")
@@ -2267,7 +2264,7 @@ position = Vector2(9271, 447)
 [node name="limbo" type="Area2D" parent="."]
 
 [node name="collsionLimbo" type="CollisionShape2D" parent="limbo"]
-position = Vector2(5320.25, 611)
+position = Vector2(5311, 709)
 shape = SubResource("RectangleShape2D_ieoi2")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

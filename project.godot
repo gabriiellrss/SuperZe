@@ -24,7 +24,8 @@ MusicPlayer="*res://scripts/music_player.gd"
 [display]
 
 window/size/viewport_width=640
-window/size/viewport_height=360
+window/size/viewport_height=362
+window/size/mode=3
 window/stretch/mode="canvas_items"
 
 [global_group]
